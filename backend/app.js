@@ -13,7 +13,7 @@ var jugadoresRouter = require('./routes/jugadores');
 
 var app = express();
 
-require('dotenv').config();
+require('dotenv').config({path: "../.env"});
 
 mongoose.connect(process.env.MONGODB)
   .then(() => {

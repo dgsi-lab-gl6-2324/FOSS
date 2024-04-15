@@ -13,3 +13,5 @@ var JugadorSchema = new Schema({
     altura: Number,
     peso: Number
 }, {collection : 'jugadores'});
+
+module.exports = mongoose.model('Jugador', JugadorSchema);
