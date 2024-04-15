@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Players from "./components/Players";
 import Teams from "./components/Teams";
+import Satff from "./components/Staff";
 import FormNewPlayer from "./components/FormNewPlayer";
 import FormNewTeam from "./components/FormNewTeam";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/players" element={<Players />} />
           <Route path="/teams" element={<Teams />} />
+          <Route path="/staff" element={<Satff />} />
           <Route path="/addplayer" element={<FormNewPlayer />} />
           <Route path="/addteam" element={<FormNewTeam />} />
           <Route path="*" element={<Container><h1>404 Not Found</h1></Container>} />
