@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var debug = require('debug')('backend:app');
+
 var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
@@ -14,6 +16,7 @@ require('dotenv').config();
 
 mongoose.connect(process.env.MONGODB)
   .then(() => {
+    debug('Connected to MongoDB');
   }).catch(err => {
     console.log(err)
   });
