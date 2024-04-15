@@ -11,19 +11,21 @@ const Home = () => {
           Bienvenido al sistema de soporte de clubes de Fútbol
         </h4>
       </Row>
-      <Row className="mt-4">
+      <Row className="mt-4 col-8">
         <Slider />
       </Row>
-      <Row className="d-flex justify-content-center mt-3">
+      <Row className="d-flex justify-content-center mt-4">
         <Link to="/players" className="text-decoration-none">
-          <Button color="primary" className="">
+          <Button color="primary" style={{ width: "300px" }}>
             VER JUGADORES
           </Button>
         </Link>
       </Row>
-      <Row className="d-flex justify-content-center mt-2">
+      <Row className="d-flex justify-content-center mt-4">
         <Link to="/teams" className="text-decoration-none">
-          <Button color="success">VER EQUIPOS</Button>
+          <Button color="success" style={{ width: "300px" }}>
+            VER EQUIPOS
+          </Button>
         </Link>
       </Row>
     </Container>

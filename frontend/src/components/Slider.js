@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import balon from '../images/balon.png';
+import jugadores from '../images/jugadores.jpg';
+import aficion from '../images/aficion.jpg';
+
 import {
   Carousel,
   CarouselItem,
@@ -11,20 +14,20 @@ import {
 const items = [
   {
     src: balon,
-    altText: 'Slide 1',
+    altText: 'equipos',
     caption: 'Gestiona y visualiza los equipos de tu club',
     key: 1,
   },
   {
-    src: 'https://picsum.photos/id/456/1200/400',
-    altText: 'Slide 2',
-    caption: 'Slide 2',
+    src: jugadores,
+    altText: 'jugadores',
+    caption: 'Accede a información de los jugadores de tu club',
     key: 2,
   },
   {
-    src: 'https://picsum.photos/id/678/1200/400',
-    altText: 'Slide 3',
-    caption: 'Slide 3',
+    src: aficion, 
+    altText: 'info',
+    caption: 'Visualiza la última hora de tu club',
     key: 3,
   },
 ];
@@ -57,7 +60,11 @@ function Example(args) {
         onExited={() => setAnimating(false)}
         key={item.src}
       >
-        <img src={item.src} alt={item.altText} />
+        <img 
+          src={item.src} 
+          alt={item.altText} 
+          style={{ width: '100%', height: '400px', objectFit: 'cover' }} // Aplicar estilos CSS aquí
+        />
         <CarouselCaption
           captionText={item.caption}
         />
