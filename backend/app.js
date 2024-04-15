@@ -12,7 +12,7 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-require('dotenv').config();
+require('dotenv').config({path: "../.env"});
 
 mongoose.connect(process.env.MONGODB)
   .then(() => {
