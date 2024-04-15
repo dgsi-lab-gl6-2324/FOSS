@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { 
-  Table,
-  Container 
-} from "reactstrap";
+import { Table, Container, Button } from "reactstrap";
 import { getPlayers } from "../utils/apicalls";
-
+import { Link } from "react-router-dom";  
 const Players = () => {
   const [players, setPlayers] = useState([]);
 
@@ -44,8 +41,13 @@ const Players = () => {
           ))}
         </tbody>
       </Table>
+      <Link to="/addplayer" className="text-decoration-none">
+        <Button color="primary">
+          Agregar nuevo jugador
+        </Button>
+      </Link>
     </Container>
   );
-};
+}
 
 export default Players;
