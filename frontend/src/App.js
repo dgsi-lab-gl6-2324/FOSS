@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Header from "./components/Header";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "reactstrap";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import Players from "./components/Players";
+import Teams from "./components/Teams";
+import Satff from "./components/Staff";
+import FormNewPlayer from "./components/FormNewPlayer";
+import FormNewTeam from "./components/FormNewTeam";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Router>
+        <div
+          style={{
+            backgroundImage: "url(/images/background.jpg)"   
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/players" element={<Players />} />
+            <Route path="/teams" element={<Teams />} />
+            <Route path="/staff" element={<Satff />} />
+            <Route path="/addplayer" element={<FormNewPlayer />} />
+            <Route path="/addteam" element={<FormNewTeam />} />
+            <Route
+              path="*"
+              element={
+                <Container>
+                  <h1>404 Not Found</h1>
+                </Container>
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 
