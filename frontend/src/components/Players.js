@@ -23,8 +23,9 @@ const Players = () => {
         <thead>
           <tr>
             <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Nombre</th>
+            <th>Apellido 1</th>
+            <th>Apellido 2</th>
             <th>Age</th>
             <th>Team</th>
           </tr>
@@ -33,10 +34,10 @@ const Players = () => {
           {players.map((player) => (
             <tr key={player.id}>
               <th scope="row">{player.id}</th>
-              <td>{player.firstName}</td>
-              <td>{player.lastName}</td>
-              <td>{player.age}</td>
-              <td>{player.team}</td>
+              <td>{player.nombre}</td>
+              <td>{player.apellido1}</td>
+              <td>{player.apellido2}</td>
+              <td>{player.edad}</td>
             </tr>
           ))}
         </tbody>

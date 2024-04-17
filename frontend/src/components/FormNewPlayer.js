@@ -1,6 +1,28 @@
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
-
+import { useState } from "react";
+import { postPlayer } from "../utils/apicalls";
 const FormNewPlayer = () => {
+  const [nombre, setNombre] = useState("");
+  const [apellido1, setApellido1] = useState("");
+  const [apellido2, setApellido2] = useState("");
+  const [edad, setEdad] = useState("");
+
+  const handleSave = async () => {
+    const playerData = {
+      nombre,
+      apellido1,
+      apellido2,
+      edad,
+    };
+
+    try {
+      const response = await postPlayer(playerData);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Form className="m-3">
       <Row>
@@ -11,18 +33,36 @@ const FormNewPlayer = () => {
               id="nombre"
               name="nombre"
               placeholder="Nombre del jugador"
-              type="email"
+              onChange={(e) => setNombre(e.target.value)}
             />
           </FormGroup>
         </Col>
-        <Col md={4}>
+        <Col md={2}>
           <FormGroup>
-            <Label for="apellidos">Apellidos</Label>
+            <Label for="apellido1">Apellido 1</Label>
             <Input
-              id="apellidos"
+              id="apellido1"
               name="apellidos"
-              placeholder="Apellidos del jugador"
+              placeholder="Primer apellido del jugador"
+              onChange={(e) => setApellido1(e.target.value)}
             />
+          </FormGroup>
+        </Col>
+        <Col md={2}>
+          <FormGroup>
+            <Label for="apellido2">Apellido 2</Label>
+            <Input
+              id="apellido2"
+              name="apellido2"
+              placeholder="Segundo apellido del jugador"
+              onChange={(e) => setApellido2(e.target.value)}
+            />
+          </FormGroup>
+        </Col>
+        <Col md={2}>
+          <FormGroup>
+            <Label for="edad">Edad</Label>
+            <Input id="edad" name="edad" type="number" onChange={(e) => setEdad(e.target.value)}/>
           </FormGroup>
         </Col>
       </Row>
@@ -88,7 +128,7 @@ const FormNewPlayer = () => {
           </FormGroup>
         </Col>
       </Row>
-      <Button>Guardar</Button>
+      <Button onClick={handleSave}>Guardar</Button>
     </Form>
   );
 };
