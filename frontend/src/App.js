@@ -9,6 +9,7 @@ import Teams from "./components/Teams";
 import Satff from "./components/Staff";
 import FormNewPlayer from "./components/FormNewPlayer";
 import FormNewTeam from "./components/FormNewTeam";
+import FormNewStaff from "./components/FormNewStaff";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/staff" element={<Satff />} />
             <Route path="/addplayer" element={<FormNewPlayer />} />
             <Route path="/addteam" element={<FormNewTeam />} />
+            <Route path="/addstaff" element={<FormNewStaff />} />
             <Route
               path="*"
               element={

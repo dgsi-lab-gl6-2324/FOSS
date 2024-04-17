@@ -1,39 +1,42 @@
-import {
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Row,
-  Container,
+import { 
+    Button,
+    Col,
+    Container,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Row
 } from "reactstrap";
+
 import { useState } from "react";
-import { postPlayer } from "../utils/apicalls";
+import { postStaff } from "../utils/apicalls";
 
-const FormNewPlayer = () => {
-  const [nombre, setNombre] = useState("");
-  const [apellido1, setApellido1] = useState("");
-  const [apellido2, setApellido2] = useState("");
-  const [edad, setEdad] = useState("");
+const FormNewStaff = () => {
 
-  const handleSave = async () => {
-    const playerData = {
-      nombre,
-      apellido1,
-      apellido2,
-      edad,
-    };
+    const [nombre, setNombre] = useState("");
+    const [apellido1, setApellido1] = useState("");
+    const [apellido2, setApellido2] = useState("");
+    const [edad, setEdad] = useState("");
+    
 
-    try {
-      const response = await postPlayer(playerData);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
+    const handleSave = async () => {
+        const staffData = {
+          nombre,
+          apellido1,
+          apellido2,
+          edad,
+        };
+    
+        try {
+          const response = await postStaff(staffData);
+          console.log(response);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+  
+    return (
     <Container className="d-flex justify-content-center mx-5">
       <Form className="m-3">
         <Row>
@@ -106,7 +109,7 @@ const FormNewPlayer = () => {
             </FormGroup>
           </Col>
         </Row>
-        <h3>Direccion del jugador</h3>
+        <h3>Direccion del miembro del cuerpo tecnico</h3>
         <hr />
         <FormGroup>
           <Label for="direccion">Dirección de residencia</Label>
@@ -145,10 +148,10 @@ const FormNewPlayer = () => {
               <Input id="equipo" name="equipo" type="select" />
             </FormGroup>
           </Col>
-          <Col md={1}>
+          <Col md={3}>
             <FormGroup>
-              <Label for="dorsal">Dorsal</Label>
-              <Input id="dorsal" name="dorsal" type="number" />
+              <Label for="rol">Rol</Label>
+              <Input id="rol" name="rol" type="select" />
             </FormGroup>
           </Col>
         </Row>
@@ -158,4 +161,4 @@ const FormNewPlayer = () => {
   );
 };
 
-export default FormNewPlayer;
+export default FormNewStaff;
