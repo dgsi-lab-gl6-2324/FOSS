@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table, Container } from "reactstrap";
 import { getTeams } from "../utils/apicalls";
+import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 
 const Teams = () => {
   const [teams, setTeams] = useState([]);
@@ -47,6 +49,9 @@ const Teams = () => {
           ))}
         </tbody>
       </Table>
+      <Link to="/addteam" className="text-decoration-none">
+        <Button color="primary">Agregar nuevo equipo</Button>
+      </Link>
     </Container>
   );
 };

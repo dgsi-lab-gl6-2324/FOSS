@@ -8,11 +8,11 @@ export  {
     postTeam,
 };
 function getPlayers(){
-    return API.get('/players').then(res => res.data);
+    return API.get('/jugadores').then(res => res.data);
 }
 
 function getSinglePlayer(id){
-    return API.get(`/players/${id}`).then(res => res.data);
+    return API.get(`/jugadores/${id}`).then(res => res.data);
 }
 
 function getTeams(){
@@ -24,7 +24,7 @@ function getSingleTeam(id){
 }
 
 function postPlayer(data){
-    return API.post('/addplayer', data).then(res => res.data);
+    return API.post('/jugadores', data).then(res => res.data);
 }
 
 function postTeam(data){
