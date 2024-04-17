@@ -9,10 +9,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   NavbarText,
 } from "reactstrap";
 
@@ -56,17 +52,15 @@ function Header() {
                 Equipos
               </NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Option 1</DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <NavItem className="me-3">
+              <NavLink
+                tag={Link}
+                to="/staff"
+                className="text-decoration-none text-dark"
+              >
+                Cuerpo técino
+              </NavLink>
+            </NavItem>
           </Nav>
           <NavbarText className="me-3">
             <NavLink

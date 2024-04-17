@@ -1,16 +1,33 @@
-import React from 'react';
-import CardStaff from './CardStaff';
-import cuerpoTecnico from '../images/cuerpo-tecnico.jpg';
-import entrenador from '../images/entrenador.jpg';
-import directiva from '../images/directiva.jpg';
-import { Container } from 'reactstrap';
+import React from "react";
+import TablaStaff from "./TablaStaff.jsx";
+import { Button, Container, Row } from "reactstrap";
+import { Link } from "react-router-dom";
 
 const Staff = () => {
   return (
-    <Container className="d-flex justify-content-center align-items-center flex-wrap mt-5">
-      <CardStaff image={entrenador} title="Entrenadores" />
-      <CardStaff image={cuerpoTecnico} title="Otro cuerpo técnico" />
-      <CardStaff image={directiva} title="Directiva" />
+    <Container>
+      <Row>
+        <h3>Entrenadores</h3>
+        <hr />
+        <TablaStaff tipoStaff="entrenador" />
+      </Row>
+      <Row>
+        <h3>Otros</h3>
+        <hr />
+        <TablaStaff tipoStaff="entrenador" />
+      </Row>
+      <Row>
+        <h3>Directiva</h3>
+        <hr />
+        <TablaStaff tipoStaff="entrenador" />
+      </Row>
+      <Row>
+        <Link to="/addstaff" className="text-decoration-none">
+          <Button color="primary">
+            Agregar nuevo miembro del cuerpo técnico
+          </Button>
+        </Link>
+      </Row>
     </Container>
   );
 };
