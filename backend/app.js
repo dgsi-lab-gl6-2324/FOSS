@@ -6,7 +6,7 @@ var logger = require('morgan');
 var debug = require('debug')('backend:app');
 
 var mongoose = require('mongoose');
-
+var cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var jugadoresRouter = require('./routes/jugadores');
@@ -14,6 +14,10 @@ var jugadoresRouter = require('./routes/jugadores');
 var app = express();
 
 require('dotenv').config({path: "../.env"});
+
+app.use(cors({
+  origin: "http://localhost:3000"
+}));
 
 mongoose.connect(process.env.MONGODB)
   .then(() => {
