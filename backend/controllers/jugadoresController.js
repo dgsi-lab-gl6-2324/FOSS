@@ -1,5 +1,4 @@
 var debug = require('debug')('backend:jugadoresController');
-var mongoose = require('mongoose');
 var Jugador = require('../models/Jugador');
 
 exports.list = function(req, res) {
