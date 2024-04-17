@@ -38,3 +38,16 @@ exports.show = function(req, res) {
             debug("GET /jugadores/%s ERROR", req.params.id);
         });
 }
+
+
+exports.update = function(req, res) {
+    Jugador.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec()
+        .then(function(jugador){
+            res.status(200).json(jugador);
+            debug("PUT /jugadores/%s", req.params.id);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+            debug("PUT /jugadores/%s ERROR", req.params.id);
+        });
+}

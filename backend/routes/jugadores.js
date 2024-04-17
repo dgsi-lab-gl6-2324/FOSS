@@ -12,4 +12,7 @@ router.post('/', Jugador.new);
 /* GET detalles jugador */
 router.get('/:id', Jugador.show);
 
+/* PUT actualizar jugador */
+router.put('/:id', Jugador.update);
+
 module.exports = router;
