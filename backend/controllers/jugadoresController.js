@@ -26,3 +26,15 @@ exports.new = function(req, res) {
             debug("POST /jugadores ERROR");
         });
 }
+
+exports.show = function(req, res) {
+    Jugador.findById(req.params.id).exec()
+        .then(function(jugador){
+            res.status(200).json(jugador);
+            debug("GET /jugadores/%s", req.params.id);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+            debug("GET /jugadores/%s ERROR", req.params.id);
+        });
+}
