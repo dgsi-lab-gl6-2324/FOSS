@@ -3,11 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var debug = require('debug')('backend:app');
+
+var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+require('dotenv').config({path: "../.env"});
+
+mongoose.connect(process.env.MONGODB)
+  .then(() => {
+    debug('Connected to MongoDB');
+  }).catch(err => {
+    console.log(err)
+  });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
