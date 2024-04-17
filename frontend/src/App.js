@@ -14,16 +14,29 @@ function App() {
   return (
     <>
       <Router>
-        <Header/>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/players" element={<Players />} />
-          <Route path="/teams" element={<Teams />} />
-          <Route path="/staff" element={<Satff />} />
-          <Route path="/addplayer" element={<FormNewPlayer />} />
-          <Route path="/addteam" element={<FormNewTeam />} />
-          <Route path="*" element={<Container><h1>404 Not Found</h1></Container>} />
-        </Routes>
+        <div
+          style={{
+            backgroundImage: "url(/images/background.jpg)"   
+          }}
+        >
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/players" element={<Players />} />
+            <Route path="/teams" element={<Teams />} />
+            <Route path="/staff" element={<Satff />} />
+            <Route path="/addplayer" element={<FormNewPlayer />} />
+            <Route path="/addteam" element={<FormNewTeam />} />
+            <Route
+              path="*"
+              element={
+                <Container>
+                  <h1>404 Not Found</h1>
+                </Container>
+              }
+            />
+          </Routes>
+        </div>
       </Router>
     </>
   );

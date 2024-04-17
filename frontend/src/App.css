@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.bg-image {
+  background-image: url('./images/background.jpg'); /* Reemplaza './images/background.png' con la ruta de tu imagen */
+  background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  height: 100vh; /* Ajusta la altura al 100% del viewport */
+  opacity: 0.8; /* Ajusta la opacidad de la imagen */
+  z-index: -1; /* Coloca la imagen de fondo detrás de todo el contenido */
+}
+
+
+
