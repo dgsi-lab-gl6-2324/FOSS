@@ -21,7 +21,7 @@ const Teams = () => {
 
   return (
     <Container>
-      <Table bordered>
+      <Table bordered className="m-3">
         <thead>
           <tr>
             <th>#</th>
