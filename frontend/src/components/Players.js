@@ -11,6 +11,7 @@ const Players = () => {
       .then((data) => {
         // Actualizar el estado con los datos de los jugadores
         setPlayers(data);
+        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching players:", error);
