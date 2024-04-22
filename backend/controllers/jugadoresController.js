@@ -1,6 +1,7 @@
 var debug = require('debug')('backend:jugadoresController');
 var Jugador = require('../models/Jugador');
 
+/* GET lista jugadores */
 exports.list = function(req, res) {
     Jugador.find().exec()
         .then(function(jugadores){
@@ -13,6 +14,7 @@ exports.list = function(req, res) {
         });
 };
 
+/* POST nuevo jugador */
 exports.new = function(req, res) {
     var nuevoJugador = new Jugador(req.body);
     nuevoJugador.save()
@@ -26,6 +28,7 @@ exports.new = function(req, res) {
         });
 }
 
+/* GET detalles jugador */
 exports.show = function(req, res) {
     Jugador.findById(req.params.id).exec()
         .then(function(jugador){
@@ -38,7 +41,7 @@ exports.show = function(req, res) {
         });
 }
 
-
+/* PUT actualizar jugador */
 exports.update = function(req, res) {
     Jugador.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec()
         .then(function(jugador){
@@ -51,6 +54,7 @@ exports.update = function(req, res) {
         });
 }
 
+/* DELETE borrar jugador */
 exports.delete = function(req, res) {
     Jugador.findOneAndDelete(req.params.id).exec()
         .then(function(jugador){
