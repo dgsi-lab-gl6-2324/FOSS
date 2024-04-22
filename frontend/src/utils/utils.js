@@ -28,5 +28,15 @@ export const categorias = {
   alevin: "Alevín (11-12 años)",
   infantil: "Infantil (13-14 años)",
   cadete: "Cadete (15-16 años)",
-  juvenil: "Juvenil (17-19 años)"
+  juvenil: "Juvenil (17-19 años)",
+  absoluta: "Absoluta (20+ años)"
+}
+
+export const tiposStaff = {
+  entrenador: "Entrenador",
+  segundoEntrenador: "Segundo entrenador",
+  entrenadorPorteros: "Entrenador de porteros",
+  fisioterapeuta: "Fisioterapeuta",
+  preparadorFisico: "Preparador físico",
+  delegado: "Delegado"
 }

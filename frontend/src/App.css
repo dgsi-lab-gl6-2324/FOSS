@@ -17,3 +17,8 @@
   opacity: 0.1; /* Ajusta la opacidad para oscurecer la imagen */
   z-index: -1; /* Asegura que la imagen esté detrás de otros elementos */
 }
+
+.table-hover tbody tr:hover {
+  background-color: #ddd; /* Cambia esto al color que quieras para el hover */
+  cursor: pointer;
+}

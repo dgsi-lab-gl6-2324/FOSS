@@ -12,6 +12,7 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { postStaff, getTeams } from "../utils/apicalls";
+import { tiposStaff } from "../utils/utils";
 
 const FormNewStaff = () => {
   const [teams, setTeams] = useState([]);
@@ -62,6 +63,8 @@ const FormNewStaff = () => {
       console.error(error);
     }
   };
+
+  const tiposStaffOptions = Object.values(tiposStaff);
 
   return (
     <Container className="d-flex justify-content-center mx-5">
@@ -222,13 +225,11 @@ const FormNewStaff = () => {
                 value={staffData.rol}
                 onChange={handleChange}
               >
-                <option value="entrenador">Entrenador</option>
-                <option value="entrenador2">Segundo Entrenador</option>
-                <option value="entrenadorPorteros">Entrenador Porteros</option>
-                <option value="delegado">Delegado</option>
-                <option value="fisioterapeuta">Fisioterapeuta</option>
-                <option value="preparador">Preparador fisico</option>
-                <option value="medico">Medico</option>
+                {tiposStaffOptions.map((categoria, index) => (
+                  <option key={index} value={categoria}>
+                    {categoria}
+                  </option>
+                ))}
               </Input>
             </FormGroup>
           </Col>
