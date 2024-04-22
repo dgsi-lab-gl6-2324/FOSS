@@ -14,4 +14,7 @@ router.get('/:id', Jugador.show);
 /* PUT actualizar jugador */
 router.put('/:id', Jugador.update);
 
+/* DELETE borrar jugador */
+router.delete('/:id', Jugador.delete);
+
 module.exports = router;
