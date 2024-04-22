@@ -36,6 +36,10 @@ exports.new = (req, res) => {
             if (jugador.equipo) {
                 return Equipo.findById(jugador.equipo).exec()
                     .then(equipo => {
+                        if (!equipo) {
+                            res.status(404).json({message: "Equipo no encontrado"});
+                            debug("POST /jugadores ERROR");
+                        }
                         equipo.jugadores.push(jugador);
                         return equipo.save();
                     })
