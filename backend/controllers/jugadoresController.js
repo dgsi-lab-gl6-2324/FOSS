@@ -16,7 +16,20 @@ exports.list = function(req, res) {
 
 /* POST nuevo jugador */
 exports.new = function(req, res) {
-    var nuevoJugador = new Jugador(req.body);
+    var nuevoJugador = new Jugador({
+        nombre: req.body.nombre,
+        apellido1: req.body.apellido1,
+        apellido2: req.body.apellido2,
+        edad: req.body.edad,
+        email: req.body.email,
+        telefono: req.body.telefono,
+        direccion: req.body.direccion,
+        ciudad: req.body.ciudad,
+        provincia: req.body.provincia,
+        zip: req.body.zip,
+        equipo: req.body.equipo ? req.body.equipo : null,
+        dorsal: req.body.dorsal
+    });
     nuevoJugador.save()
         .then(function(jugador){
             res.status(201).json(jugador);
