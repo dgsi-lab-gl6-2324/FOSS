@@ -28,7 +28,7 @@ const FormNewPlayer = ({ selectedPlayer }) => {
     ciudad: "",
     provincia: "",
     zip: "",
-    equipo: "",
+    equipo: null,
     dorsal: "",
   });
 
@@ -46,7 +46,7 @@ const FormNewPlayer = ({ selectedPlayer }) => {
 
   const handleSave = async (event) => {
     event.preventDefault();
-    console.log(playerData);
+    console.log(playerData.equipo);
     try {
       const response = await postPlayer(playerData);
       console.log(response);
@@ -227,7 +227,7 @@ const FormNewPlayer = ({ selectedPlayer }) => {
                 onChange={handleChange}
               >
                 {teams.map((team) => (
-                  <option key={team.id} value={team.id}>
+                  <option key={team._id} value={team._id}>
                     {team.categoria}-{team.nombre}
                   </option>
                 ))}
