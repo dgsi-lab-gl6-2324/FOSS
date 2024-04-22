@@ -3,7 +3,7 @@ var router = express.Router();
 var Equipo = require('../controllers/equipoController');
 
 // /* GET lista equipos */
-// router.get('/', Equipo.list);
+router.get('/', Equipo.list);
 
 // /* POST nuevo equipo */
 // router.post('/', Equipo.new);
