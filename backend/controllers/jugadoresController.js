@@ -1,63 +1,97 @@
 var debug = require('debug')('backend:jugadoresController');
 var Jugador = require('../models/Jugador');
+var Equipo = require('../models/Equipo');
 
-exports.list = function(req, res) {
+/* GET lista jugadores */
+exports.list = (req, res) => {
     Jugador.find().exec()
-        .then(function(jugadores){
+        .then(jugadores => {
             res.status(200).json(jugadores);
             debug("GET /jugadores");
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("GET /jugadores ERROR");
         });
 };
 
-exports.new = function(req, res) {
-    var nuevoJugador = new Jugador(req.body);
+/* POST nuevo jugador */
+exports.new = (req, res) => {
+    var nuevoJugador = new Jugador({
+        nombre: req.body.nombre,
+        apellido1: req.body.apellido1,
+        apellido2: req.body.apellido2,
+        edad: req.body.edad,
+        email: req.body.email,
+        telefono: req.body.telefono,
+        direccion: req.body.direccion,
+        ciudad: req.body.ciudad,
+        provincia: req.body.provincia,
+        zip: req.body.zip,
+        equipo: req.body.equipo ? req.body.equipo : null,
+        dorsal: req.body.dorsal
+    });
     nuevoJugador.save()
-        .then(function(jugador){
-            res.status(201).json(jugador);
-            debug("POST /jugadores");
+        .then(jugador => {
+            if (jugador.equipo) {
+                return Equipo.findById(jugador.equipo).exec()
+                    .then(equipo => {
+                        if (!equipo) {
+                            res.status(404).json({message: "Equipo no encontrado"});
+                            debug("POST /jugadores ERROR");
+                        }
+                        equipo.jugadores.push(jugador._id);
+                        return equipo.save();
+                    })
+                    .then(() => {
+                        res.status(201).json(jugador);
+                        debug("POST /jugadores");
+                    });
+            } else {
+                res.status(201).json(jugador);
+                debug("POST /jugadores");
+            }
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("POST /jugadores ERROR");
         });
 }
 
-exports.show = function(req, res) {
+/* GET detalles jugador */
+exports.show = (req, res) => {
     Jugador.findById(req.params.id).exec()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(200).json(jugador);
             debug("GET /jugadores/%s", req.params.id);
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("GET /jugadores/%s ERROR", req.params.id);
         });
 }
 
-
-exports.update = function(req, res) {
+/* PUT actualizar jugador */
+exports.update = (req, res) => {
     Jugador.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(200).json(jugador);
             debug("PUT /jugadores/%s", req.params.id);
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("PUT /jugadores/%s ERROR", req.params.id);
         });
 }
 
-exports.delete = function(req, res) {
+/* DELETE borrar jugador */
+exports.delete = (req, res) => {
     Jugador.findOneAndDelete(req.params.id).exec()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(200).json(jugador);
             debug("DELETE /jugadores/%s", req.params.id);
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("DELETE /jugadores/%s ERROR", req.params.id);
         });

@@ -14,8 +14,11 @@ var JugadorSchema = new Schema({
     direccion: String,
     ciudad: String,
     provincia: String,
-    zip: String,
-    equipo: { type: Schema.Types.ObjectId, ref: 'Equipo' },
+    zip: Number,
+    equipo: { 
+        type: Schema.Types.ObjectId,
+        ref: 'Equipo' 
+    },
     dorsal: Number
 }, {collection : 'jugadores'});
 
