@@ -14,4 +14,7 @@ router.post('/', Equipo.new);
 // /* PUT actualizar equipo */
 // router.put('/:id', Equipo.update);
 
+/* GET lista jugadores de un equipo */
+router.get('/:id/jugadores', Equipo.jugadores);
+
 module.exports = router;

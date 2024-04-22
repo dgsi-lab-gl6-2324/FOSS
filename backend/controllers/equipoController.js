@@ -42,3 +42,17 @@ exports.new = (req, res) => {
 }
 
 /* PUT actualizar equipo */
+
+
+/* GET lista jugadores de un equipo */
+exports.jugadores = (req, res) => {
+    Equipo.findById(req.params.id).populate('jugadores').exec()
+        .then(equipo => {
+            res.status(200).json(equipo.jugadores);
+            debug("GET /equipos/%s/jugadores", req.params.id);
+        })
+        .catch(err => {
+            res.status(500).json(err);
+            debug("GET /equipos/%s/jugadores ERROR", req.params.id);
+        });
+}
