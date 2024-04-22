@@ -6,7 +6,7 @@ var Staff = require('../controllers/staffController');
 router.get('/', Staff.list);
 
 /* POST nuevo staff */
-
+router.post('/', Staff.new);
 
 /* GET detalles staff */
 

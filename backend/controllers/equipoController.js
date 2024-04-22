@@ -34,6 +34,7 @@ exports.new = (req, res) => {
         nombre: req.body.nombre,
         categoria: req.body.categoria,
         jugadores: req.body.jugadores ? req.body.jugadores : []
+        // TODO: añadir staff
     });
     nuevoEquipo.save()
         .then(equipo => {

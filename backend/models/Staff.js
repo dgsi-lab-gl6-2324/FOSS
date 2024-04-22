@@ -22,7 +22,7 @@ var StaffSchema = new Schema({
     rol: {
         type: String,
         enum: [
-            'entrenadr',
+            'entrenador',
             'entrenador2',
             'entrenadorPorteros',
             'delegado',
