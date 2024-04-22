@@ -7,8 +7,6 @@ var debug = require('debug')('backend:app');
 
 var mongoose = require('mongoose');
 var cors = require('cors');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var jugadoresRouter = require('./routes/jugadores');
 var equiposRouter = require('./routes/equipos');
 
@@ -37,8 +35,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/jugadores', jugadoresRouter);
 app.use('/equipos', equiposRouter);
 
