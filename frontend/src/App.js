@@ -17,7 +17,7 @@ function App() {
       <Router>
         <div
           style={{
-            backgroundImage: "url(/images/background.jpg)"   
+            backgroundImage: "url(./images/background.jpg)"   
           }}
         >
           <Header />

@@ -7,15 +7,27 @@ import {
   Label,
   Row,
   Container,
+  Alert,
 } from "reactstrap";
 import { useState } from "react";
 import { postPlayer } from "../utils/apicalls";
+import { useNavigate } from 'react-router-dom';
 
 const FormNewPlayer = () => {
   const [nombre, setNombre] = useState("");
   const [apellido1, setApellido1] = useState("");
   const [apellido2, setApellido2] = useState("");
   const [edad, setEdad] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [provincia, setProvincia] = useState("");
+  const [zip, setZip] = useState("");
+  const [equipo, setEquipo] = useState("");
+  const [dorsal, setDorsal] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     const playerData = {
@@ -23,10 +35,19 @@ const FormNewPlayer = () => {
       apellido1,
       apellido2,
       edad,
+      email,
+      telefono,
+      direccion,
+      ciudad,
+      provincia,
+      zip,
+      equipo,
+      dorsal,
     };
 
     try {
       const response = await postPlayer(playerData);
+      navigate('/players', { state: { alert: '¡Jugador registrado correctamente!' } }); // Redirige a /players con estado
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -91,6 +112,7 @@ const FormNewPlayer = () => {
                 name="email"
                 placeholder="user@gmail.com"
                 type="email"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormGroup>
           </Col>
@@ -102,6 +124,7 @@ const FormNewPlayer = () => {
                 name="telefono"
                 placeholder="123456789"
                 type="tel"
+                onChange={(e) => setTelefono(e.target.value)}
               />
             </FormGroup>
           </Col>
@@ -114,25 +137,39 @@ const FormNewPlayer = () => {
             id="direccion"
             name="direccion"
             placeholder="C/ Ejemplo, 123"
+            onChange={(e) => setDireccion(e.target.value)}
           />
         </FormGroup>
         <Row>
           <Col md={6}>
             <FormGroup>
               <Label for="ciudad">Ciudad</Label>
-              <Input id="ciudad" name="ciudad" />
+              <Input
+                id="ciudad"
+                name="ciudad"
+                onChange={(e) => setCiudad(e.target.value)}
+              />
             </FormGroup>
           </Col>
           <Col md={4}>
             <FormGroup>
               <Label for="provincia">Provincia</Label>
-              <Input id="provincia" name="provincia" />
+              <Input
+                id="provincia"
+                name="provincia"
+                onChange={(e) => setProvincia(e.target.value)}
+              />
             </FormGroup>
           </Col>
           <Col md={2}>
             <FormGroup>
               <Label for="zip">Código postal</Label>
-              <Input id="zip" name="zip" type="number" />
+              <Input
+                id="zip"
+                name="zip"
+                type="number"
+                onChange={(e) => setZip(e.target.value)}
+              />
             </FormGroup>
           </Col>
         </Row>
@@ -142,13 +179,23 @@ const FormNewPlayer = () => {
           <Col md={4}>
             <FormGroup>
               <Label for="equipo">Equipo</Label>
-              <Input id="equipo" name="equipo" type="select" />
+              <Input
+                id="equipo"
+                name="equipo"
+                type="select"
+                onChange={(e) => setEquipo(e.target.value)}
+              />
             </FormGroup>
           </Col>
           <Col md={1}>
             <FormGroup>
               <Label for="dorsal">Dorsal</Label>
-              <Input id="dorsal" name="dorsal" type="number" />
+              <Input
+                id="dorsal"
+                name="dorsal"
+                type="number"
+                onChange={(e) => setDorsal(e.target.value)}
+              />
             </FormGroup>
           </Col>
         </Row>

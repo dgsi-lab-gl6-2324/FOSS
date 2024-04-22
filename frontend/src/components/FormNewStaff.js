@@ -1,42 +1,58 @@
-import { 
-    Button,
-    Col,
-    Container,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-    Row
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Row,
 } from "reactstrap";
 
 import { useState } from "react";
 import { postStaff } from "../utils/apicalls";
 
 const FormNewStaff = () => {
+  const [nombre, setNombre] = useState("");
+  const [apellido1, setApellido1] = useState("");
+  const [apellido2, setApellido2] = useState("");
+  const [edad, setEdad] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [provincia, setProvincia] = useState("");
+  const [zip, setZip] = useState("");
+  const [equipo, setEquipo] = useState("");
+  const [rol, setRol] = useState("");
+  const [titulos, setTitulos] = useState("");
 
-    const [nombre, setNombre] = useState("");
-    const [apellido1, setApellido1] = useState("");
-    const [apellido2, setApellido2] = useState("");
-    const [edad, setEdad] = useState("");
-    
+  const handleSave = async () => {
+    const staffData = {
+      nombre,
+      apellido1,
+      apellido2,
+      edad,
+      email,
+      telefono,
+      direccion,
+      ciudad,
+      provincia,
+      zip,
+      equipo,
+      rol,
+      titulos,
+    };
 
-    const handleSave = async () => {
-        const staffData = {
-          nombre,
-          apellido1,
-          apellido2,
-          edad,
-        };
-    
-        try {
-          const response = await postStaff(staffData);
-          console.log(response);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-  
-    return (
+    try {
+      const response = await postStaff(staffData);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
     <Container className="d-flex justify-content-center mx-5">
       <Form className="m-3">
         <Row>
@@ -48,7 +64,6 @@ const FormNewStaff = () => {
               <Input
                 id="nombre"
                 name="nombre"
-                placeholder="Nombre del jugador"
                 onChange={(e) => setNombre(e.target.value)}
               />
             </FormGroup>
@@ -94,6 +109,7 @@ const FormNewStaff = () => {
                 name="email"
                 placeholder="user@gmail.com"
                 type="email"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormGroup>
           </Col>
@@ -105,6 +121,7 @@ const FormNewStaff = () => {
                 name="telefono"
                 placeholder="123456789"
                 type="tel"
+                onChange={(e) => setTelefono(e.target.value)}
               />
             </FormGroup>
           </Col>
@@ -117,25 +134,39 @@ const FormNewStaff = () => {
             id="direccion"
             name="direccion"
             placeholder="C/ Ejemplo, 123"
+            onChange={(e) => setDireccion(e.target.value)}
           />
         </FormGroup>
         <Row>
           <Col md={6}>
             <FormGroup>
               <Label for="ciudad">Ciudad</Label>
-              <Input id="ciudad" name="ciudad" />
+              <Input
+                id="ciudad"
+                name="ciudad"
+                onChange={(e) => setCiudad(e.target.value)}
+              />
             </FormGroup>
           </Col>
           <Col md={4}>
             <FormGroup>
               <Label for="provincia">Provincia</Label>
-              <Input id="provincia" name="provincia" />
+              <Input
+                id="provincia"
+                name="provincia"
+                onChange={(e) => setProvincia(e.target.value)}
+              />
             </FormGroup>
           </Col>
           <Col md={2}>
             <FormGroup>
               <Label for="zip">Código postal</Label>
-              <Input id="zip" name="zip" type="number" />
+              <Input 
+                id="zip" 
+                name="zip" 
+                type="number"
+                onChange={(e) => setZip(e.target.value)} 
+              />
             </FormGroup>
           </Col>
         </Row>
@@ -145,13 +176,34 @@ const FormNewStaff = () => {
           <Col md={4}>
             <FormGroup>
               <Label for="equipo">Equipo</Label>
-              <Input id="equipo" name="equipo" type="select" />
+              <Input 
+                id="equipo" 
+                name="equipo" 
+                type="select" 
+                onChange={(e) => setEquipo(e.target.value)}
+              />
             </FormGroup>
           </Col>
           <Col md={3}>
             <FormGroup>
               <Label for="rol">Rol</Label>
-              <Input id="rol" name="rol" type="select" />
+              <Input 
+                id="rol" 
+                name="rol" 
+                type="select"
+                onChange={(e) => setRol(e.target.value)} 
+              />
+            </FormGroup>
+          </Col>
+          <Col md={3}>
+            <FormGroup>
+              <Label for="rol">Titulos profesionales deportivos</Label>
+              <Input 
+                id="rol" 
+                name="rol" 
+                type="select" 
+                onChange={(e) => setTitulos(e.target.value)}
+              />
             </FormGroup>
           </Col>
         </Row>
