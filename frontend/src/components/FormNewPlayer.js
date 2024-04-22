@@ -11,25 +11,26 @@ import {
   Alert,
 
 } from "reactstrap";
+
 import { useState } from "react";
 import { postPlayer } from "../utils/apicalls";
 import { useNavigate } from "react-router-dom";
 import Validation from "../utils/utils";
 
-const FormNewPlayer = () => {
+const FormNewPlayer = ({selectedPlayer}) => {
   const [playerData, setPlayerData] = useState({
-    nombre: "",
-    apellido1: "",
-    apellido2: "",
-    edad: "",
-    email: "",
-    telefono: "",
-    direccion: "",
-    ciudad: "",
-    provincia: "",
-    zip: "",
-    equipo: "",
-    dorsal: "",
+    nombre: selectedPlayer ? selectedPlayer.nombre : "",
+    apellido1: selectedPlayer ? selectedPlayer.apellido1 : "",
+    apellido2: selectedPlayer ? selectedPlayer.apellido2 : "",
+    edad: selectedPlayer ? selectedPlayer.edad : "",
+    email: selectedPlayer ? selectedPlayer.email : "",
+    telefono: selectedPlayer ? selectedPlayer.telefono : "",
+    direccion: selectedPlayer ? selectedPlayer.direccion : "",
+    ciudad: selectedPlayer ? selectedPlayer.ciudad : "",
+    provincia: selectedPlayer ? selectedPlayer.provincia : "",
+    zip: selectedPlayer ? selectedPlayer.zip : "",
+    equipo: selectedPlayer ? selectedPlayer.equipo : "",
+    dorsal: selectedPlayer ? selectedPlayer.dorsal : "",
   });
 
   const navigate = useNavigate();
