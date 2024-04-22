@@ -5,8 +5,8 @@ var Equipo = require('../controllers/equipoController');
 /* GET lista equipos */
 router.get('/', Equipo.list);
 
-// /* GET detalles equipo */
-// router.get('/:id', Equipo.show);
+/* GET detalles equipo */
+router.get('/:id', Equipo.show);
 
 /* POST nuevo equipo */
 router.post('/', Equipo.new);

@@ -40,7 +40,7 @@ exports.new = (req, res) => {
                             res.status(404).json({message: "Equipo no encontrado"});
                             debug("POST /jugadores ERROR");
                         }
-                        equipo.jugadores.push(jugador);
+                        equipo.jugadores.push(jugador._id);
                         return equipo.save();
                     })
                     .then(() => {
