@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var Jugador = require('../controllers/jugadoresController');
-var jugador = require('../models/Jugador');
 
 /* GET lista jugadores */
 router.get('/', Jugador.list);
@@ -14,5 +13,8 @@ router.get('/:id', Jugador.show);
 
 /* PUT actualizar jugador */
 router.put('/:id', Jugador.update);
+
+/* DELETE borrar jugador */
+router.delete('/:id', Jugador.delete);
 
 module.exports = router;

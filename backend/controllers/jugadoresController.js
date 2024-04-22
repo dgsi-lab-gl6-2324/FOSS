@@ -1,5 +1,4 @@
 var debug = require('debug')('backend:jugadoresController');
-var mongoose = require('mongoose');
 var Jugador = require('../models/Jugador');
 
 exports.list = function(req, res) {
@@ -49,5 +48,17 @@ exports.update = function(req, res) {
         .catch(function(err){
             res.status(500).json(err);
             debug("PUT /jugadores/%s ERROR", req.params.id);
+        });
+}
+
+exports.delete = function(req, res) {
+    Jugador.findOneAndDelete(req.params.id).exec()
+        .then(function(jugador){
+            res.status(200).json(jugador);
+            debug("DELETE /jugadores/%s", req.params.id);
+        })
+        .catch(function(err){
+            res.status(500).json(err);
+            debug("DELETE /jugadores/%s ERROR", req.params.id);
         });
 }

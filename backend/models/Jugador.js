@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
+
 var JugadorSchema = new Schema({
     nombre: {
         type: String,
@@ -9,9 +9,14 @@ var JugadorSchema = new Schema({
     apellido1: String,
     apellido2: String,
     edad: Number,
-    posicion: String,
-    altura: Number,
-    peso: Number
+    email: String,
+    telefono: String,
+    direccion: String,
+    ciudad: String,
+    provincia: String,
+    zip: String,
+    equipo: { type: Schema.Types.ObjectId, ref: 'Equipo' },
+    dorsal: Number
 }, {collection : 'jugadores'});
 
 module.exports = mongoose.model('Jugador', JugadorSchema);
