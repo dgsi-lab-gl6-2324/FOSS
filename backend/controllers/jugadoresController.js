@@ -1,5 +1,6 @@
 var debug = require('debug')('backend:jugadoresController');
 var Jugador = require('../models/Jugador');
+var Equipo = require('../models/Equipo');
 
 /* GET lista jugadores */
 exports.list = (req, res) => {
@@ -32,8 +33,20 @@ exports.new = (req, res) => {
     });
     nuevoJugador.save()
         .then(jugador => {
-            res.status(201).json(jugador);
-            debug("POST /jugadores");
+            if (jugador.equipo) {
+                return Equipo.findById(jugador.equipo).exec()
+                    .then(equipo => {
+                        equipo.jugadores.push(jugador);
+                        return equipo.save();
+                    })
+                    .then(() => {
+                        res.status(201).json(jugador);
+                        debug("POST /jugadores");
+                    });
+            } else {
+                res.status(201).json(jugador);
+                debug("POST /jugadores");
+            }
         })
         .catch(err => {
             res.status(500).json(err);
