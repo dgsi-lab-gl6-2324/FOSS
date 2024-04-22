@@ -8,11 +8,23 @@ var EquipoSchema = new schema({
     },
     categoria: {
         type: String,
+        enum: [
+            'prebenjamin',
+            'benjamin',
+            'alevin',
+            'infantil',
+            'cadete',
+            'juvenil'
+        ],
         required: true
     },
     jugadores: [{ 
         type: schema.Types.ObjectId, 
         ref: 'Jugador' 
+    }],
+    staff: [{ 
+        type: schema.Types.ObjectId, 
+        ref: 'Staff' 
     }]
 }, { collection: 'equipos' });
 

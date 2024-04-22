@@ -9,6 +9,7 @@ var mongoose = require('mongoose');
 var cors = require('cors');
 var jugadoresRouter = require('./routes/jugadores');
 var equiposRouter = require('./routes/equipos');
+var staff = require('./routes/staff');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/jugadores', jugadoresRouter);
 app.use('/equipos', equiposRouter);
+app.use('/staff', staff);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
