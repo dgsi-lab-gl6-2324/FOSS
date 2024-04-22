@@ -7,11 +7,11 @@ import {
   Label,
   Row,
   Container,
-  Alert,
+  FormFeedback,
 } from "reactstrap";
 import { useState } from "react";
 import { postPlayer } from "../utils/apicalls";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const FormNewPlayer = () => {
   const [nombre, setNombre] = useState("");
@@ -47,7 +47,9 @@ const FormNewPlayer = () => {
 
     try {
       const response = await postPlayer(playerData);
-      navigate('/players', { state: { alert: '¡Jugador registrado correctamente!' } }); // Redirige a /players con estado
+      navigate("/players", {
+        state: { alert: "¡Jugador registrado correctamente!" },
+      }); // Redirige a /players con estado
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -63,12 +65,15 @@ const FormNewPlayer = () => {
           <Col md={4}>
             <FormGroup>
               <Label for="nombre">Nombre</Label>
-              <Input
+              <Input className={(nombre.length > 0 && nombre.length < 30) ? 'valid' : 'invalid'}
                 id="nombre"
                 name="nombre"
                 placeholder="Nombre del jugador"
                 onChange={(e) => setNombre(e.target.value)}
+                required
               />
+              <FormFeedback valid></FormFeedback>
+              <FormFeedback ></FormFeedback>
             </FormGroup>
           </Col>
           <Col md={3}>
