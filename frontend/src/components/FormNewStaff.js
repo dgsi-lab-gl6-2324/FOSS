@@ -9,48 +9,62 @@ import {
   Row,
 } from "reactstrap";
 
-import { useState } from "react";
-import { postStaff } from "../utils/apicalls";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { postStaff, getTeams } from "../utils/apicalls";
+import { tiposStaff } from "../utils/utils";
 
 const FormNewStaff = () => {
-  const [nombre, setNombre] = useState("");
-  const [apellido1, setApellido1] = useState("");
-  const [apellido2, setApellido2] = useState("");
-  const [edad, setEdad] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [ciudad, setCiudad] = useState("");
-  const [provincia, setProvincia] = useState("");
-  const [zip, setZip] = useState("");
-  const [equipo, setEquipo] = useState("");
-  const [rol, setRol] = useState("");
-  const [titulos, setTitulos] = useState("");
+  const [teams, setTeams] = useState([]);
 
-  const handleSave = async () => {
-    const staffData = {
-      nombre,
-      apellido1,
-      apellido2,
-      edad,
-      email,
-      telefono,
-      direccion,
-      ciudad,
-      provincia,
-      zip,
-      equipo,
-      rol,
-      titulos,
-    };
+  const [staffData, setStaffData] = useState({
+    nombre: "",
+    apellido1: "",
+    apellido2: "",
+    edad: "",
+    email: "",
+    telefono: "",
+    direccion: "",
+    ciudad: "",
+    provincia: "",
+    zip: "",
+    equipo: "",
+    rol: "",
+    titulo: "",
+  });
 
+  useEffect(() => {
+    getTeams()
+      .then((data) => {
+        setTeams(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching teams:", error);
+      });
+  }, []);
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setStaffData({
+      ...staffData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSave = async (event) => {
+    event.preventDefault();
     try {
       const response = await postStaff(staffData);
-      console.log(response);
+      navigate("/staff", {
+        state: { alert: "¡Personal registrado correctamente!" },
+      });
     } catch (error) {
       console.error(error);
     }
   };
+
+  const tiposStaffOptions = Object.values(tiposStaff);
 
   return (
     <Container className="d-flex justify-content-center mx-5">
@@ -64,7 +78,8 @@ const FormNewStaff = () => {
               <Input
                 id="nombre"
                 name="nombre"
-                onChange={(e) => setNombre(e.target.value)}
+                onChange={handleChange}
+                value={staffData.nombre}
               />
             </FormGroup>
           </Col>
@@ -73,8 +88,9 @@ const FormNewStaff = () => {
               <Label for="apellido1">Primer apellido</Label>
               <Input
                 id="apellido1"
-                name="apellidos"
-                onChange={(e) => setApellido1(e.target.value)}
+                name="apellido1"
+                onChange={handleChange}
+                value={staffData.apellido1}
               />
             </FormGroup>
           </Col>
@@ -84,7 +100,8 @@ const FormNewStaff = () => {
               <Input
                 id="apellido2"
                 name="apellido2"
-                onChange={(e) => setApellido2(e.target.value)}
+                onChange={handleChange}
+                value={staffData.apellido2}
               />
             </FormGroup>
           </Col>
@@ -95,7 +112,8 @@ const FormNewStaff = () => {
                 id="edad"
                 name="edad"
                 type="number"
-                onChange={(e) => setEdad(e.target.value)}
+                value={staffData.edad}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>
@@ -109,7 +127,8 @@ const FormNewStaff = () => {
                 name="email"
                 placeholder="user@gmail.com"
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
+                value={staffData.email}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>
@@ -121,7 +140,8 @@ const FormNewStaff = () => {
                 name="telefono"
                 placeholder="123456789"
                 type="tel"
-                onChange={(e) => setTelefono(e.target.value)}
+                value={staffData.telefono}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>
@@ -134,7 +154,8 @@ const FormNewStaff = () => {
             id="direccion"
             name="direccion"
             placeholder="C/ Ejemplo, 123"
-            onChange={(e) => setDireccion(e.target.value)}
+            value={staffData.direccion}
+            onChange={handleChange}
           />
         </FormGroup>
         <Row>
@@ -144,7 +165,8 @@ const FormNewStaff = () => {
               <Input
                 id="ciudad"
                 name="ciudad"
-                onChange={(e) => setCiudad(e.target.value)}
+                value={staffData.ciudad}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>
@@ -154,18 +176,20 @@ const FormNewStaff = () => {
               <Input
                 id="provincia"
                 name="provincia"
-                onChange={(e) => setProvincia(e.target.value)}
+                value={staffData.provincia}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>
           <Col md={2}>
             <FormGroup>
               <Label for="zip">Código postal</Label>
-              <Input 
-                id="zip" 
-                name="zip" 
+              <Input
+                id="zip"
+                name="zip"
                 type="number"
-                onChange={(e) => setZip(e.target.value)} 
+                value={staffData.zip}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>
@@ -176,33 +200,47 @@ const FormNewStaff = () => {
           <Col md={4}>
             <FormGroup>
               <Label for="equipo">Equipo</Label>
-              <Input 
-                id="equipo" 
-                name="equipo" 
-                type="select" 
-                onChange={(e) => setEquipo(e.target.value)}
-              />
+              <Input
+                id="equipo"
+                name="equipo"
+                type="select"
+                value={staffData.equipo}
+                onChange={handleChange}
+              >
+                {teams.map((team) => (
+                  <option key={team.id} value={team.id}>
+                    {team.categoria}-{team.nombre}
+                  </option>
+                ))}
+              </Input>
             </FormGroup>
           </Col>
           <Col md={3}>
             <FormGroup>
               <Label for="rol">Rol</Label>
-              <Input 
-                id="rol" 
-                name="rol" 
+              <Input
+                id="rol"
+                name="rol"
                 type="select"
-                onChange={(e) => setRol(e.target.value)} 
-              />
+                value={staffData.rol}
+                onChange={handleChange}
+              >
+                {tiposStaffOptions.map((categoria, index) => (
+                  <option key={index} value={categoria}>
+                    {categoria}
+                  </option>
+                ))}
+              </Input>
             </FormGroup>
           </Col>
           <Col md={3}>
             <FormGroup>
-              <Label for="rol">Titulos profesionales deportivos</Label>
-              <Input 
-                id="rol" 
-                name="rol" 
-                type="select" 
-                onChange={(e) => setTitulos(e.target.value)}
+              <Label for="titulo">Titulos profesionales deportivos</Label>
+              <Input
+                id="titulo"
+                name="titulo"
+                value={staffData.titulo}
+                onChange={handleChange}
               />
             </FormGroup>
           </Col>

@@ -3,6 +3,7 @@ import { Table, Container } from "reactstrap";
 import { getTeams } from "../utils/apicalls";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
+import TablaEquipos from "./TablaEquipos";
 
 const Teams = () => {
   const [teams, setTeams] = useState([]);
@@ -21,34 +22,7 @@ const Teams = () => {
 
   return (
     <Container>
-      <Table bordered className="m-3">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Número de jugadores</th>
-            <th>Jugadores</th>
-          </tr>
-        </thead>
-        <tbody>
-          {teams.map((team) => (
-            <tr key={team.id}>
-              <th scope="row">{team.id}</th>
-              <td>{team.name}</td>
-              <td>{team.category}</td>
-              <td>{team.players.length}</td>
-              <td>
-                <ul>
-                  {team.players.map((player) => (
-                    <li key={player.id}>{player.name}</li>
-                  ))}
-                </ul>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <TablaEquipos teams={teams} />
       <Link to="/addteam" className="text-decoration-none">
         <Button color="primary">Agregar nuevo equipo</Button>
       </Link>
