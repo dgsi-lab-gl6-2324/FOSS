@@ -2,20 +2,20 @@ var debug = require('debug')('backend:jugadoresController');
 var Jugador = require('../models/Jugador');
 
 /* GET lista jugadores */
-exports.list = function(req, res) {
+exports.list = (req, res) => {
     Jugador.find().exec()
-        .then(function(jugadores){
+        .then(jugadores => {
             res.status(200).json(jugadores);
             debug("GET /jugadores");
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("GET /jugadores ERROR");
         });
 };
 
 /* POST nuevo jugador */
-exports.new = function(req, res) {
+exports.new = (req, res) => {
     var nuevoJugador = new Jugador({
         nombre: req.body.nombre,
         apellido1: req.body.apellido1,
@@ -31,50 +31,50 @@ exports.new = function(req, res) {
         dorsal: req.body.dorsal
     });
     nuevoJugador.save()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(201).json(jugador);
             debug("POST /jugadores");
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("POST /jugadores ERROR");
         });
 }
 
 /* GET detalles jugador */
-exports.show = function(req, res) {
+exports.show = (req, res) => {
     Jugador.findById(req.params.id).exec()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(200).json(jugador);
             debug("GET /jugadores/%s", req.params.id);
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("GET /jugadores/%s ERROR", req.params.id);
         });
 }
 
 /* PUT actualizar jugador */
-exports.update = function(req, res) {
+exports.update = (req, res) => {
     Jugador.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(200).json(jugador);
             debug("PUT /jugadores/%s", req.params.id);
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("PUT /jugadores/%s ERROR", req.params.id);
         });
 }
 
 /* DELETE borrar jugador */
-exports.delete = function(req, res) {
+exports.delete = (req, res) => {
     Jugador.findOneAndDelete(req.params.id).exec()
-        .then(function(jugador){
+        .then(jugador => {
             res.status(200).json(jugador);
             debug("DELETE /jugadores/%s", req.params.id);
         })
-        .catch(function(err){
+        .catch(err => {
             res.status(500).json(err);
             debug("DELETE /jugadores/%s ERROR", req.params.id);
         });
