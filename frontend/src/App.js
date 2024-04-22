@@ -2,7 +2,8 @@ import "./App.css";
 import Header from "./components/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "reactstrap";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Home from "./components/Home";
 import Players from "./components/Players";
 import Teams from "./components/Teams";
@@ -12,10 +13,8 @@ import FormNewTeam from "./components/FormNewTeam";
 import FormNewStaff from "./components/FormNewStaff";
 
 function App() {
-  
-  const location = useLocation();
-  const selectedPlayer = location.state.selectedPlayer;
 
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   return (
     <Router>

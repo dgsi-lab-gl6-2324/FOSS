@@ -14,23 +14,25 @@ import {
 
 import { useState } from "react";
 import { postPlayer } from "../utils/apicalls";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Validation from "../utils/utils";
 
 const FormNewPlayer = ({selectedPlayer}) => {
+  
+
   const [playerData, setPlayerData] = useState({
-    nombre: selectedPlayer ? selectedPlayer.nombre : "",
-    apellido1: selectedPlayer ? selectedPlayer.apellido1 : "",
-    apellido2: selectedPlayer ? selectedPlayer.apellido2 : "",
-    edad: selectedPlayer ? selectedPlayer.edad : "",
-    email: selectedPlayer ? selectedPlayer.email : "",
-    telefono: selectedPlayer ? selectedPlayer.telefono : "",
-    direccion: selectedPlayer ? selectedPlayer.direccion : "",
-    ciudad: selectedPlayer ? selectedPlayer.ciudad : "",
-    provincia: selectedPlayer ? selectedPlayer.provincia : "",
-    zip: selectedPlayer ? selectedPlayer.zip : "",
-    equipo: selectedPlayer ? selectedPlayer.equipo : "",
-    dorsal: selectedPlayer ? selectedPlayer.dorsal : "",
+    nombre: "",
+    apellido1: "",
+    apellido2:  "",
+    edad: "",
+    email: "",
+    telefono:  "",
+    direccion: "",
+    ciudad: "",
+    provincia: "",
+    zip: "",
+    equipo: "",
+    dorsal: "",
   });
 
   const navigate = useNavigate();
@@ -47,17 +49,10 @@ const FormNewPlayer = ({selectedPlayer}) => {
 
   const handleSave = async (event) => {
     event.preventDefault();
-
-    const validationErrors = Validation(playerData);
-    setErrors(validationErrors);
-
-    if (Object.keys(validationErrors).length > 0) {
-      setShowAlert(true);
-      return;
-    }
-
+    console.log(playerData);
     try {
       const response = await postPlayer(playerData);
+      console.log(response);
       navigate("/players", {
         state: { alert: "¡Jugador registrado correctamente!" },
       });
@@ -98,7 +93,7 @@ const FormNewPlayer = ({selectedPlayer}) => {
               <Label for="apellido1">Primer apellido</Label>
               <Input
                 id="apellido1"
-                name="apellidos"
+                name="apellido1"
                 value={playerData.apellido1}
                 onChange={handleChange}
               />
