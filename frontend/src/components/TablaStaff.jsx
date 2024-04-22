@@ -33,12 +33,12 @@ const TablaStaff = ({tipoStaff}) => {
       <tbody>
         {staff.filter((member) => member.type === tipoStaff) // Filtra por tipo de staff
           .map((member) => (
-          <tr key={staff.id}>
-            <th scope="row">{staff.id}</th>
-            <td>{staff.nombre}</td>
-            <td>{staff.apellido1}</td>
-            <td>{staff.apellido2}</td>
-            <td>{staff.team}</td>
+          <tr key={member.id}>
+            <th scope="row">{member.id}</th>
+            <td>{member.nombre}</td>
+            <td>{member.apellido1}</td>
+            <td>{member.apellido2}</td>
+            <td>{member.team}</td>
           </tr>
         ))}
       </tbody>
