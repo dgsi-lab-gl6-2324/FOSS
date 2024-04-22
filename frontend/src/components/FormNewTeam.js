@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 import { useNavigate } from "react-router-dom";
-import {categorias} from "../utils/utils";
+import {categorias}  from "../utils/utils";
 
 const FormNewTeam = () => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -45,7 +45,7 @@ const FormNewTeam = () => {
         console.error("Error fetching players:", error);
       });
   }, []); // Ejecutar solo una vez al montar el componente
- 
+
   const handleChange = (e) => {
     setTeamData({
       ...teamData,
@@ -57,7 +57,8 @@ const FormNewTeam = () => {
     event.preventDefault();
     const teamDataWithPlayers = {
       ...teamData,
-      players: selectedPlayers, staff: selectedStaff,
+      players: selectedPlayers,
+      staff: selectedStaff,
     };
     try {
       const response = await postTeam(teamDataWithPlayers);
@@ -99,6 +100,8 @@ const FormNewTeam = () => {
     setSearchStaffType(event.target.value);
   };
 
+  const categoriaOptions = Object.values(categorias);
+
   return (
     <Container>
       <Form className="m-3" onSubmit={handleSave}>
@@ -109,9 +112,27 @@ const FormNewTeam = () => {
             <FormGroup>
               <Label for="CategoriaEquipo">Categoria del equipo</Label>
               <Input
+                type="select"
                 id="CategoriaEquipo"
-                name="CategoriaEquipo"
+                name="categoria"
                 value={teamData.categoria}
+                onChange={handleChange}
+              >
+                {categoriaOptions.map((categoria, index) => (
+                  <option key={index} value={categoria}>
+                    {categoria}
+                  </option>
+                ))}
+              </Input>
+            </FormGroup>
+          </Col>
+          <Col md={4}>
+            <FormGroup>
+              <Label for="nombreEquipo">Nombre del equipo</Label>
+              <Input
+                id="nombreEquipo"
+                name="nombreEquipo"
+                value={teamData.nombreEquipo}
                 onChange={handleChange}
               />
             </FormGroup>

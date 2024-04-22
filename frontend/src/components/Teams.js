@@ -32,9 +32,9 @@ const Teams = () => {
         <tbody>
           {teams.map((team) => (
             <tr key={team.id}>
-              <th scope="row">{team.id}</th>
-              <td>{team.name}</td>
-              <td>{team.category}</td>
+              <th scope="row">{team._id}</th>
+              <td>{team.nombre}</td>
+              <td>{team.categoria}</td>
             </tr>
           ))}
         </tbody>

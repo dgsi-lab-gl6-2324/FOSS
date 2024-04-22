@@ -22,7 +22,7 @@ export default function Validation(values) {
     return errors;
 }
 
-const categorias = {
+export const categorias = {
   prebenjamin: "Prebenjamín (5-8 años)",
   benjamin: "Benjamín (9-10 años)",
   alevin: "Alevín (11-12 años)",
