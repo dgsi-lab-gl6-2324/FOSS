@@ -27,8 +27,6 @@ const Teams = () => {
             <th>#</th>
             <th>Nombre</th>
             <th>Categoría</th>
-            <th>Número de jugadores</th>
-            <th>Jugadores</th>
           </tr>
         </thead>
         <tbody>
@@ -37,14 +35,6 @@ const Teams = () => {
               <th scope="row">{team.id}</th>
               <td>{team.name}</td>
               <td>{team.category}</td>
-              <td>{team.players.length}</td>
-              <td>
-                <ul>
-                  {team.players.map((player) => (
-                    <li key={player.id}>{player.name}</li>
-                  ))}
-                </ul>
-              </td>
             </tr>
           ))}
         </tbody>

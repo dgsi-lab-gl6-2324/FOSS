@@ -20,4 +20,13 @@ export default function Validation(values) {
     // Agrega aquí las validaciones para los demás campos...
   
     return errors;
-  }
+}
+
+const categorias = {
+  prebenjamin: "Prebenjamín (5-8 años)",
+  benjamin: "Benjamín (9-10 años)",
+  alevin: "Alevín (11-12 años)",
+  infantil: "Infantil (13-14 años)",
+  cadete: "Cadete (15-16 años)",
+  juvenil: "Juvenil (17-19 años)"
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getPlayers } from "../utils/apicalls";
+import { getPlayers, postTeam } from "../utils/apicalls";
 import {
   Button,
   Col,
@@ -12,15 +12,26 @@ import {
   Table,
 } from "reactstrap";
 
+import { useNavigate } from "react-router-dom";
+import {categorias} from "../utils/utils";
+
 const FormNewTeam = () => {
-  const [players, setPlayers] = useState([]); // Lista de jugadores
-  const [selectedPlayers, setSelectedPlayers] = useState([]); // Jugadores seleccionados
-  const [search, setSearch] = useState(""); // Valor de búsqueda
-  const [nombreEquipo, setNombreEquipo] = useState(""); // Nombre del equipo
-  const [staff, setStaff] = useState([]); // Lista del cuerpo técnico
-  const [selectedStaff, setSelectedStaff] = useState([]); // Miembros del cuerpo técnico seleccionados
-  const [searchStaff, setSearchStaff] = useState(""); // Valor de búsqueda para el cuerpo técnico
-  const [searchStaffType, setSearchStaffType] = useState(''); // Valor de búsqueda para el tipo de cuerpo técnico
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
+  const [selectedStaff, setSelectedStaff] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchStaff, setSearchStaff] = useState("");
+  const [searchStaffType, setSearchStaffType] = useState("");
+  const [players, setPlayers] = useState([]);
+  const [staff, setStaff] = useState([]);
+
+  const [teamData, setTeamData] = useState({
+    nombreEquipo: "",
+    categoria: "",
+    jugadores: [],
+    staff: [],
+  });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Realizar la llamada a la API para obtener los jugadores
@@ -34,10 +45,38 @@ const FormNewTeam = () => {
         console.error("Error fetching players:", error);
       });
   }, []); // Ejecutar solo una vez al montar el componente
+ 
+  const handleChange = (e) => {
+    setTeamData({
+      ...teamData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  // Función para manejar la selección de jugadores
-  const handleSelectPlayer = (player) => {
-    setSelectedPlayers([...selectedPlayers, player]);
+  const handleSave = async (event) => {
+    event.preventDefault();
+    const teamDataWithPlayers = {
+      ...teamData,
+      players: selectedPlayers, staff: selectedStaff,
+    };
+    try {
+      const response = await postTeam(teamDataWithPlayers);
+      navigate("/teams", {
+        state: { alert: "¡Equipo registrado correctamente!" },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePlayerSelection = (player, isSelected) => {
+    if (isSelected) {
+      setSelectedPlayers((prevPlayers) => [...prevPlayers, player]);
+    } else {
+      setSelectedPlayers((prevPlayers) =>
+        prevPlayers.filter((p) => p.id !== player.id)
+      );
+    }
   };
 
   // Función para manejar la selección del cuerpo técnico
@@ -62,117 +101,120 @@ const FormNewTeam = () => {
 
   return (
     <Container>
-      <Row>
-        <h3>Datos del equipo</h3>
-        <hr />
-        <Col md={4}>
-          <FormGroup>
-            <Label for="CategoriaEquipo">Categoria del equipo</Label>
+      <Form className="m-3" onSubmit={handleSave}>
+        <Row>
+          <h3>Datos del equipo</h3>
+          <hr />
+          <Col md={4}>
+            <FormGroup>
+              <Label for="CategoriaEquipo">Categoria del equipo</Label>
+              <Input
+                id="CategoriaEquipo"
+                name="CategoriaEquipo"
+                value={teamData.categoria}
+                onChange={handleChange}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <h3>Jugadores del equipo</h3>
+          <hr />
+          <Col>
             <Input
-              id="CategoriaEquipo"
-              name="CategoriaEquipo"
-              onChange={(e) => setNombreEquipo(e.target.value)}
+              className="m-2"
+              type="text"
+              placeholder="Buscar jugadores"
+              value={search}
+              onChange={handleSearch}
             />
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row>
-        <h3>Jugadores del equipo</h3>
-        <hr />
-        <Col>
-          <Input
-            className="m-2"
-            type="text"
-            placeholder="Buscar jugadores"
-            value={search}
-            onChange={handleSearch}
-          />
+            <Table bordered className="m-3">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Primer apellido</th>
+                  <th>Segundo Apellido</th>
+                  <th>Edad</th>
+                  <th>Agregar al equipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {players
+                  .filter((player) => !search || player.nombre.includes(search))
+                  .map((player, index) => (
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{player.nombre}</td>
+                      <td>{player.apellido1}</td>
+                      <td>{player.apellido2}</td>
+                      <td>{player.edad}</td>
+                      <td>
+                        <Input
+                          type="checkbox"
+                          onChange={handlePlayerSelection}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
+          </Col>
+        </Row>
+        <Row>
+          <h3>Cuerpo técnico del equipo</h3>
+          <hr />
+          <Col>
+            <Input
+              className="m-2"
+              type="text"
+              placeholder="Nombre"
+              value={searchStaff}
+              onChange={handleSearchStaff}
+            />
+          </Col>
+          <Col md={4}>
+            <Input
+              className="m-2"
+              placeholder="Categoria"
+              type="select"
+              value={searchStaff}
+              onChange={handleSearchStaff}
+            />
+          </Col>
           <Table bordered className="m-3">
             <thead>
               <tr>
                 <th>#</th>
                 <th>Nombre</th>
-                <th>Primer apellido</th>
-                <th>Segundo Apellido</th>
-                <th>Edad</th>
-                <th>Agregar al equipo</th>
+                <th>Tipo de staff</th>
+                <th>Seleccionar</th>
               </tr>
             </thead>
             <tbody>
-              {players
-                .filter((player) => player.name.includes(search))
-                .map((player, index) => (
+              {staff
+                .filter(
+                  (member) =>
+                    member.name.includes(searchStaff) &&
+                    member.type.includes(searchStaffType)
+                )
+                .map((member, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td>{player.name}</td>
-                    <td>{player.apellido1}</td>
-                    <td>{player.apellido2}</td>
-                    <td>{player.edad}</td>
+                    <td>{member.name}</td>
                     <td>
                       <Input
                         type="checkbox"
-                        onChange={() => handleSelectPlayer(player)}
+                        onChange={() => handleSelectStaff(member)}
                       />
                     </td>
                   </tr>
                 ))}
             </tbody>
           </Table>
-        </Col>
-      </Row>
-      <Row>
-        <h3>Cuerpo técnico del equipo</h3>
-        <hr />
-        <Col>
-          <Input
-            className="m-2"
-            type="text"
-            placeholder="Nombre"
-            value={searchStaff}
-            onChange={handleSearchStaff}
-          />
-        </Col>
-        <Col md={4}>
-          <Input
-            className="m-2"
-            placeholder="Categoria"
-            type="select"
-            value={searchStaff}
-            onChange={handleSearchStaff}
-          />
-        </Col>
-        <Table bordered className="m-3">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Tipo de staff</th>
-              <th>Seleccionar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {staff
-              .filter(
-                (member) =>
-                  member.name.includes(searchStaff) &&
-                  member.type.includes(searchStaffType)
-              )
-              .map((member, index) => (
-                <tr key={index}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{member.name}</td>
-                  <td>
-                    <Input
-                      type="checkbox"
-                      onChange={() => handleSelectStaff(member)}
-                    />
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-      </Row>
-      <Button>Registrar equipo</Button>
+        </Row>
+        <Button type="submit">Registrar equipo</Button>
+      </Form>
     </Container>
   );
 };

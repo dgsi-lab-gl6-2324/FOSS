@@ -9,24 +9,21 @@ import {
   Container,
   FormFeedback,
   Alert,
-
 } from "reactstrap";
 
-import { useState } from "react";
-import { postPlayer } from "../utils/apicalls";
+import { useState, useEffect } from "react";
+import { postPlayer, getTeams } from "../utils/apicalls";
 import { useNavigate, useLocation } from "react-router-dom";
 import Validation from "../utils/utils";
 
-const FormNewPlayer = ({selectedPlayer}) => {
-  
-
+const FormNewPlayer = ({ selectedPlayer }) => {
   const [playerData, setPlayerData] = useState({
     nombre: "",
     apellido1: "",
-    apellido2:  "",
+    apellido2: "",
     edad: "",
     email: "",
-    telefono:  "",
+    telefono: "",
     direccion: "",
     ciudad: "",
     provincia: "",
@@ -61,6 +58,18 @@ const FormNewPlayer = ({selectedPlayer}) => {
     }
   };
 
+  const [teams, setTeams] = useState([]);
+
+  useEffect(() => {
+    getTeams()
+      .then((data) => {
+        setTeams(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching teams:', error);
+      });
+  }, []);
+
   const [visible, setVisible] = useState(true);
   const onDismiss = () => setVisible(false);
 
@@ -68,7 +77,12 @@ const FormNewPlayer = ({selectedPlayer}) => {
     <Container className="d-flex justify-content-center mx-5">
       <Form className="m-3" onSubmit={handleSave}>
         {showAlert && (
-          <Alert color="danger" isOpen={visible} toggle={onDismiss} className="m-3">
+          <Alert
+            color="danger"
+            isOpen={visible}
+            toggle={onDismiss}
+            className="m-3"
+          >
             Por favor, corrija los errores antes de enviar el formulario.
           </Alert>
         )}
@@ -211,7 +225,13 @@ const FormNewPlayer = ({selectedPlayer}) => {
                 type="select"
                 value={playerData.equipo}
                 onChange={handleChange}
-              />
+              >
+                {teams.map((team) => (
+                  <option key={team.id} value={team.id}>
+                    {team.categoria}-{team.nombre}
+                  </option>
+                ))}
+              </Input>
             </FormGroup>
           </Col>
           <Col md={1}>
