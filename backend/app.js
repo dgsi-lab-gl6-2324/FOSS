@@ -14,6 +14,8 @@ var staff = require('./routes/staff');
 var app = express();
 const { FRONTEND_URL } = require('./config.js');
 
+const { FRONTEND_URL } = require('./config.js');
+
 require('dotenv').config({path: ".env"});
 
 app.use(cors({
