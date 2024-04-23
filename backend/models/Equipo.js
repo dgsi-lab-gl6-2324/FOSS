@@ -14,7 +14,8 @@ var EquipoSchema = new schema({
             'alevin',
             'infantil',
             'cadete',
-            'juvenil'
+            'juvenil',
+            'absoluta'
         ],
         required: true
     },
