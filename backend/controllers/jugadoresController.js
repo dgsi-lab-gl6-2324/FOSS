@@ -77,19 +77,65 @@ exports.show = (req, res) => {
 
 /* PUT actualizar jugador */
 exports.update = (req, res) => {
-    Jugador.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec()
+    let oldTeamId;
+
+    Jugador.findById(req.params.id).exec()
         .then(jugador => {
             if (!jugador) {
                 res.status(404).json({ message: "Jugador no encontrado" });
-                debug("PUT /jugadores/%s ERROR", req.params.id);
+                debug("PUT /jugadores ERROR");
             }
-            res.status(200).json(jugador);
-            debug("PUT /jugadores/%s", req.params.id);
+            oldTeamId = jugador.equipo;
+
+            jugador.nombre = req.body.nombre ? req.body.nombre : jugador.nombre;
+            jugador.apellido1 = req.body.apellido1 ? req.body.apellido1 : jugador.apellido1;
+            jugador.apellido2 = req.body.apellido2 ? req.body.apellido2 : jugador.apellido2;
+            jugador.edad = req.body.edad ? req.body.edad : jugador.edad;
+            jugador.email = req.body.email ? req.body.email : jugador.email;
+            jugador.telefono = req.body.telefono ? req.body.telefono : jugador.telefono;
+            jugador.direccion = req.body.direccion ? req.body.direccion : jugador.direccion;
+            jugador.ciudad = req.body.ciudad ? req.body.ciudad : jugador.ciudad;
+            jugador.provincia = req.body.provincia ? req.body.provincia : jugador.provincia;
+            jugador.zip = req.body.zip ? req.body.zip : jugador.zip;
+            jugador.equipo = req.body.equipo ? req.body.equipo : jugador.equipo;
+            jugador.dorsal = req.body.dorsal ? req.body.dorsal : jugador.dorsal;
+            
+            return jugador.save();
+        })
+        .then(jugador => {
+            let promises = [];
+
+            if (oldTeamId) {
+                promises.push(Equipo.findById(oldTeamId).exec()
+                .then(equipo => {
+                    if (equipo) {
+                        debug(typeof(equipo.jugadores))
+                        equipo.jugadores.splice(equipo.jugadores.indexOf(req.params.id, 1));
+                        return equipo.save();
+                    }
+                }));
+            }
+
+            if (jugador.equipo) {
+                promises.push(Equipo.findById(jugador.equipo).exec()
+                    .then(equipo => {
+                        if (equipo) {
+                            equipo.jugadores.push(jugador._id);
+                            return equipo.save();
+                        }
+                    }));
+            }
+
+            return Promise.all(promises)
+                .then(() => {
+                    res.status(200).json(jugador);
+                    debug("PUT /jugadores/%s", req.params.id);
+                })
         })
         .catch(err => {
-            res.status(500).json(err);
+            res.status(500).json({ message: err.message });
             debug("PUT /jugadores/%s ERROR", req.params.id);
-        });
+        })
 }
 
 /* DELETE borrar jugador */
