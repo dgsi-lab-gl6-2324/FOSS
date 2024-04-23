@@ -62,6 +62,10 @@ exports.new = (req, res) => {
 exports.show = (req, res) => {
     Jugador.findById(req.params.id).exec()
         .then(jugador => {
+            if (!jugador) {
+                res.status(404).json({ message: "Jugador no encontrado" });
+                debug("GET /jugadores/%s ERROR", req.params.id);
+            }
             res.status(200).json(jugador);
             debug("GET /jugadores/%s", req.params.id);
         })
@@ -75,6 +79,10 @@ exports.show = (req, res) => {
 exports.update = (req, res) => {
     Jugador.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec()
         .then(jugador => {
+            if (!jugador) {
+                res.status(404).json({ message: "Jugador no encontrado" });
+                debug("PUT /jugadores/%s ERROR", req.params.id);
+            }
             res.status(200).json(jugador);
             debug("PUT /jugadores/%s", req.params.id);
         })
@@ -88,6 +96,10 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     Jugador.findOneAndDelete(req.params.id).exec()
         .then(jugador => {
+            if (!jugador) {
+                res.status(404).json({ message: "Jugador no encontrado" });
+                debug("DELETE /jugadores/%s ERROR", req.params.id);
+            }
             res.status(200).json(jugador);
             debug("DELETE /jugadores/%s", req.params.id);
         })
