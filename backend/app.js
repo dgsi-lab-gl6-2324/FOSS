@@ -13,7 +13,7 @@ var staff = require('./routes/staff');
 
 var app = express();
 
-require('dotenv').config({path: "../.env"});
+require('dotenv').config({path: ".env"});
 
 app.use(cors({
   origin: "http://localhost:3000"
