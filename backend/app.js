@@ -13,10 +13,12 @@ var staff = require('./routes/staff');
 
 var app = express();
 
-require('dotenv').config({path: "../.env"});
+const { FRONTEND_URL } = require('./config.js');
+
+require('dotenv').config({path: ".env"});
 
 app.use(cors({
-  origin: "http://localhost:3000"
+  origin: FRONTEND_URL
 }));
 
 mongoose.connect(process.env.MONGODB)
