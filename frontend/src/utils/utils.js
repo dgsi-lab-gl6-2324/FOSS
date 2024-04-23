@@ -34,7 +34,7 @@ export const categorias = {
 
 export const tiposStaff = {
   entrenador: "Entrenador",
-  segundoEntrenador: "Segundo entrenador",
+  entrenador2: "Segundo entrenador",
   entrenadorPorteros: "Entrenador de porteros",
   fisioterapeuta: "Fisioterapeuta",
   preparadorFisico: "Preparador físico",

@@ -28,7 +28,7 @@ const FormNewStaff = () => {
     ciudad: "",
     provincia: "",
     zip: "",
-    equipo: "",
+    equipo: [],
     rol: "",
     titulo: "",
   });
@@ -208,7 +208,7 @@ const FormNewStaff = () => {
                 onChange={handleChange}
               >
                 {teams.map((team) => (
-                  <option key={team.id} value={team.id}>
+                  <option key={team._id} value={team._id}>
                     {team.categoria}-{team.nombre}
                   </option>
                 ))}
@@ -225,9 +225,9 @@ const FormNewStaff = () => {
                 value={staffData.rol}
                 onChange={handleChange}
               >
-                {tiposStaffOptions.map((categoria, index) => (
-                  <option key={index} value={categoria}>
-                    {categoria}
+                {Object.entries(tiposStaff).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
                   </option>
                 ))}
               </Input>

@@ -12,14 +12,9 @@ const Staff = () => {
         <TablaStaff tipoStaff="entrenador" />
       </Row>
       <Row>
-        <h3>Otros</h3>
+        <h3>Segundos entrenadores</h3>
         <hr />
-        <TablaStaff tipoStaff="entrenador" />
-      </Row>
-      <Row>
-        <h3>Directiva</h3>
-        <hr />
-        <TablaStaff tipoStaff="entrenador" />
+        <TablaStaff tipoStaff="entrenador2" />
       </Row>
       <Row>
         <Link to="/addstaff" className="text-decoration-none">

@@ -12,7 +12,7 @@ const TablaEquipos = ({teams}) => {
       </thead>
       <tbody>
         {teams.map((team) => (
-          <tr key={team.id}>
+          <tr key={team._id}>
             <th scope="row">{team._id}</th>
             <td>{team.nombre}</td>
             <td>{team.categoria}</td>

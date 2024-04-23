@@ -1,10 +1,11 @@
 import { Table } from "reactstrap";
 import { useState, useEffect } from "react";
-import { getStaff } from "../utils/apicalls";
+import { getStaff, getSingleTeam } from "../utils/apicalls";
 
 const TablaStaff = ({ tipoStaff }) => {
   const [staff, setStaff] = useState([]);
-
+  const [teams, setTeams] = useState({});
+  
   useEffect(() => {
     // Realizar la llamada a la API para obtener los jugadores
     getStaff()
@@ -17,6 +18,20 @@ const TablaStaff = ({ tipoStaff }) => {
         console.error("Error fetching players:", error);
       });
   }, []); // Ejecutar solo una vez al montar el componente
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const newTeams = {};
+      for (const member of staff) {
+        if (!teams[member.equipo]) {
+          newTeams[member.equipo] = await getSingleTeam(member.equipo);
+        }
+      }
+      setTeams((prevTeams) => ({ ...prevTeams, ...newTeams }));
+    };
+
+    fetchTeams();
+  }, [staff]);
 
   return (
     <Table hover bordered className="m-3">
@@ -39,7 +54,8 @@ const TablaStaff = ({ tipoStaff }) => {
               <td>{member.nombre}</td>
               <td>{member.apellido1}</td>
               <td>{member.apellido2}</td>
-              <td>{member.team}</td>
+              <td>{member.edad}</td>
+              <td>{teams[member.equipo]?.nombre}</td>
             </tr>
           ))}
       </tbody>

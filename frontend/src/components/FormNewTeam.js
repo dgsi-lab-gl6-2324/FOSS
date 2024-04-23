@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 import { useNavigate } from "react-router-dom";
-import {categorias}  from "../utils/utils";
+import { categorias } from "../utils/utils";
 
 const FormNewTeam = () => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
@@ -25,7 +25,7 @@ const FormNewTeam = () => {
   const [staff, setStaff] = useState([]);
 
   const [teamData, setTeamData] = useState({
-    nombreEquipo: "",
+    nombre: "",
     categoria: "",
     jugadores: [],
     staff: [],
@@ -100,8 +100,6 @@ const FormNewTeam = () => {
     setSearchStaffType(event.target.value);
   };
 
-  const categoriaOptions = Object.values(categorias);
-
   return (
     <Container>
       <Form className="m-3" onSubmit={handleSave}>
@@ -118,9 +116,9 @@ const FormNewTeam = () => {
                 value={teamData.categoria}
                 onChange={handleChange}
               >
-                {categoriaOptions.map((categoria, index) => (
-                  <option key={index} value={categoria}>
-                    {categoria}
+                {Object.entries(categorias).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
                   </option>
                 ))}
               </Input>
@@ -130,9 +128,9 @@ const FormNewTeam = () => {
             <FormGroup>
               <Label for="nombreEquipo">Nombre del equipo</Label>
               <Input
-                id="nombreEquipo"
-                name="nombreEquipo"
-                value={teamData.nombreEquipo}
+                id="nombre"
+                name="nombre"
+                value={teamData.nombre}
                 onChange={handleChange}
               />
             </FormGroup>
