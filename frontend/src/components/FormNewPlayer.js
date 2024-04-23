@@ -28,7 +28,7 @@ const FormNewPlayer = ({ selectedPlayer }) => {
     ciudad: "",
     provincia: "",
     zip: "",
-    equipo: null,
+    equipo: [],
     dorsal: "",
   });
 
@@ -39,6 +39,7 @@ const FormNewPlayer = ({ selectedPlayer }) => {
       ...playerData,
       [e.target.name]: e.target.value,
     });
+    console.log(playerData.equipo)
   };
 
   const [errors, setErrors] = useState({});
