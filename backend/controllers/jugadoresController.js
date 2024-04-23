@@ -140,17 +140,32 @@ exports.update = (req, res) => {
 
 /* DELETE borrar jugador */
 exports.delete = (req, res) => {
-    Jugador.findOneAndDelete(req.params.id).exec()
+    Jugador.findById(req.params.id).exec()
         .then(jugador => {
             if (!jugador) {
                 res.status(404).json({ message: "Jugador no encontrado" });
                 debug("DELETE /jugadores/%s ERROR", req.params.id);
             }
-            res.status(200).json(jugador);
+
+            let equipoId = jugador.equipo;
+            jugador.deleteOne().exec();
+
+            if (equipoId) {
+                return Equipo.findById(equipoId).exec();
+            }
+        })
+        .then(equipo => {
+            if (equipo) {
+                equipo.jugadores.splice(equipo.jugadores.indexOf(req.params.id), 1);
+                return equipo.save();
+            }
+        })
+        .then(() => {
+            res.status(200).json({ message: "Jugador borrado" });
             debug("DELETE /jugadores/%s", req.params.id);
         })
         .catch(err => {
-            res.status(500).json(err);
+            res.status(500).json({ message: err.message });
             debug("DELETE /jugadores/%s ERROR", req.params.id);
         });
 }
