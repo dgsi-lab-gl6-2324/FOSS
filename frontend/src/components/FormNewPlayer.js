@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 
 import { useState, useEffect } from "react";
-import { postPlayer, getTeams } from "../utils/apicalls";
+import { postPlayer, getTeams, putPlayer } from "../utils/apicalls";
 import { useNavigate, useLocation } from "react-router-dom";
 import Validation from "../utils/utils";
 
@@ -28,18 +28,30 @@ const FormNewPlayer = ({ selectedPlayer }) => {
     ciudad: "",
     provincia: "",
     zip: "",
-    equipo: [],
+    equipo: null,
     dorsal: "",
   });
+
+  const [isEditMode, setIsEditMode] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const player = location.state?.selectedPlayer;
+    if (player) {
+      setPlayerData(player);
+      setIsEditMode(true);
+    }
+  }, []);
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setPlayerData({
       ...playerData,
-      [e.target.name]: e.target.value,
+      [name]: value === "" ? null : value, // o "" en lugar de null
     });
-    console.log(playerData.equipo)
+    console.log(playerData.equipo);
   };
 
   const [errors, setErrors] = useState({});
@@ -47,13 +59,22 @@ const FormNewPlayer = ({ selectedPlayer }) => {
 
   const handleSave = async (event) => {
     event.preventDefault();
-    console.log(playerData.equipo);
+    console.log(playerData);
+    
     try {
-      const response = await postPlayer(playerData);
-      console.log(response);
-      navigate("/players", {
-        state: { alert: "¡Jugador registrado correctamente!" },
-      });
+      if (isEditMode) {
+        const response = await putPlayer(playerData);
+        console.log(response);
+        navigate("/players", {
+          state: { alert: "¡Jugador modificado correctamente!" },
+        });
+      } else {
+        const response = await postPlayer(playerData);
+        console.log(response);
+        navigate("/players", {
+          state: { alert: "¡Jugador registrado correctamente!" },
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +88,7 @@ const FormNewPlayer = ({ selectedPlayer }) => {
         setTeams(data);
       })
       .catch((error) => {
-        console.error('Error fetching teams:', error);
+        console.error("Error fetching teams:", error);
       });
   }, []);
 
@@ -227,6 +248,9 @@ const FormNewPlayer = ({ selectedPlayer }) => {
                 value={playerData.equipo}
                 onChange={handleChange}
               >
+                <option key={""} value={""}>
+                  Ninguno
+                </option>
                 {teams.map((team) => (
                   <option key={team._id} value={team._id}>
                     {team.categoria}-{team.nombre}

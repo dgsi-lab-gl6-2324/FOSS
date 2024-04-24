@@ -53,15 +53,15 @@ function postStaff(data){
 }
 
 function putPlayer(data){
-    return API.put(`/jugadores/${data.id}`, data).then(res => res.data);
+    return API.put(`/jugadores/${data._id}`, data).then(res => res.data);
 }
 
 function putTeam(data){
-    return API.put(`/equipos/${data.id}`, data).then(res => res.data);
+    return API.put(`/equipos/${data._id}`, data).then(res => res.data);
 }
 
 function putStaff(data){
-    return API.put(`/staff/${data.id}`, data).then(res => res.data);
+    return API.put(`/staff/${data._id}`, data).then(res => res.data);
 }
 
 function deletePlayer(id){
