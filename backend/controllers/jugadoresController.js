@@ -31,35 +31,45 @@ exports.new = (req, res) => {
         equipo: req.body.equipo ? req.body.equipo : null,
         dorsal: req.body.dorsal,
     });
-    nuevoJugador.save()
-        .then(jugador => {
-            if (jugador.equipo) {
+    if (nuevoJugador.equipo) {
+        Equipo.findById(nuevoJugador.equipo).exec()
+            .then(equipo => {
+                if (!equipo) {
+                    const error = new Error("Equipo no encontrado");
+                    error.status = 404;
+                    throw error;
+                }
+                return nuevoJugador.save();
+            })
+            .then(jugador => {
                 return Equipo.findByIdAndUpdate(
                     { _id: jugador.equipo },
                     { $push: { jugadores: jugador._id } }
                 ).exec()
-                    .then(equipo => {
-                        if (!equipo) {
-                            const error = new Error("Equipo no encontrado");
-                            error.status = 404;
-                            throw error;
-                        }
+                    .then(() => {
                         res.status(201).json(jugador);
                         debug("POST /jugadores");
                     });
-            } else {
+            })
+            .catch(err => {
+                if (err.status === 404) {
+                    res.status(404).json({ message: err.message, statusCode: err.status });
+                } else {
+                    res.status(500).json({ message: err.message, statusCode: 500 });
+                }
+                debug("POST /jugadores ERROR");
+            })
+    } else {
+        nuevoJugador.save()
+            .then(jugador => {
                 res.status(201).json(jugador);
                 debug("POST /jugadores");
-            }
-        })
-        .catch(err => {
-            if (err.status === 404) {
-                res.status(404).json({ message: err.message, statusCode: err.status});
-            } else {
-                res.status(500).json({ message: err.message, statusCode: 500});
-            }
-            debug("POST /jugadores ERROR");
-        });
+            })
+            .catch(err => {
+                res.status(500).json(err);
+                debug("POST /jugadores ERROR");
+            });
+    }
 };
 
 /* GET detalles jugador */
