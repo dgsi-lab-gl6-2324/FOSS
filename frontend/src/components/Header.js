@@ -58,7 +58,7 @@ function Header() {
                 to="/staff"
                 className="text-decoration-none text-dark"
               >
-                Cuerpo técino
+                Cuerpo tecnico
               </NavLink>
             </NavItem>
           </Nav>

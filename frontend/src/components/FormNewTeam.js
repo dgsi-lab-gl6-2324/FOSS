@@ -115,7 +115,7 @@ const FormNewTeam = () => {
                 name="categoria"
                 value={teamData.categoria}
                 onChange={handleChange}
-              >
+              > 
                 {Object.entries(categorias).map(([key, value]) => (
                   <option key={key} value={key}>
                     {value}
