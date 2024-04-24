@@ -34,11 +34,16 @@ exports.new = (req, res) => {
     nuevoJugador.save()
         .then(jugador => {
             if (jugador.equipo) {
-                return Equipo.updateOne(
+                return Equipo.findByIdAndUpdate(
                     { _id: jugador.equipo },
                     { $push: { jugadores: jugador._id } }
                 ).exec()
-                    .then(() => {
+                    .then(equipo => {
+                        if (!equipo) {
+                            const error = new Error("Equipo no encontrado");
+                            error.status = 404;
+                            throw error;
+                        }
                         res.status(201).json(jugador);
                         debug("POST /jugadores");
                     });
@@ -48,7 +53,11 @@ exports.new = (req, res) => {
             }
         })
         .catch(err => {
-            res.status(500).json(err);
+            if (err.status === 404) {
+                res.status(404).json({ message: err.message, statusCode: err.status});
+            } else {
+                res.status(500).json({ message: err.message, statusCode: 500});
+            }
             debug("POST /jugadores ERROR");
         });
 };
@@ -58,14 +67,19 @@ exports.show = (req, res) => {
     Jugador.findById(req.params.id).exec()
         .then(jugador => {
             if (!jugador) {
-                res.status(404).json({ message: "Jugador no encontrado" });
-                debug("GET /jugadores/%s ERROR", req.params.id);
+                const error = new Error("Jugador no encontrado");
+                error.status = 404;
+                throw error;    
             }
             res.status(200).json(jugador);
             debug("GET /jugadores/%s", req.params.id);
         })
         .catch(err => {
-            res.status(500).json(err);
+            if (err.status === 404) {
+                res.status(404).json({ message: err.message, statusCode: err.status });
+            } else {
+                res.status(500).json({ message: err.message, statusCode: 500 });
+            }
             debug("GET /jugadores/%s ERROR", req.params.id);
         });
 };
@@ -77,8 +91,9 @@ exports.update = (req, res) => {
     Jugador.findById(req.params.id).exec()
         .then(jugador => {
             if (!jugador) {
-                res.status(404).json({ message: "Jugador no encontrado" });
-                debug("PUT /jugadores ERROR");
+                const error = new Error("Jugador no encontrado");
+                error.status = 404;
+                throw error;
             }
             oldTeamId = jugador.equipo;
 
@@ -111,10 +126,17 @@ exports.update = (req, res) => {
       
             if (jugador.equipo) {
                 promises.push(
-                    Equipo.updateOne(
+                    Equipo.findByIdAndUpdate(
                         { _id: jugador.equipo },
                         { $push: { jugadores: jugador._id } }
                     ).exec()
+                        .then(equipo => {
+                            if (!equipo) {
+                                const error = new Error("Equipo no encontrado");
+                                error.status = 404;
+                                throw error;
+                            }
+                        })
                 );
             }
       
@@ -123,10 +145,14 @@ exports.update = (req, res) => {
                     res.status(200).json(jugador);
                     debug("PUT /jugadores/%s", req.params.id);
                 })
-                .catch(err => {
-                    res.status(500).json(err);
-                    debug("PUT /jugadores/%s ERROR", req.params.id);
-                });
+        .catch(err => {
+            if (err.status === 404) {
+                res.status(404).json({ message: err.message, statusCode: err.status });
+            } else {
+                res.status(500).json({ message: err.message, statusCode: 500 });
+            }
+            debug("PUT /jugadores/%s ERROR", req.params.id);
+        });
     });
 };
 
@@ -135,8 +161,9 @@ exports.delete = (req, res) => {
     Jugador.findById(req.params.id).exec()
         .then(jugador => {
             if (!jugador) {
-                res.status(404).json({ message: "Jugador no encontrado" });
-                debug("DELETE /jugadores/%s ERROR", req.params.id);
+                const error = new Error("Jugador no encontrado");
+                error.status = 404;
+                throw error;
             }
 
             let equipoId = jugador.equipo;
@@ -154,7 +181,11 @@ exports.delete = (req, res) => {
             debug("DELETE /jugadores/%s", req.params.id);
         })
         .catch(err => {
-            res.status(500).json({ message: err.message });
+            if (err.status === 404) {
+                res.status(404).json({ message: err.message, statusCode: err.status });
+            } else {
+                res.status(500).json({ message: err.message, statusCode: err.status});
+            }
             debug("DELETE /jugadores/%s ERROR", req.params.id);
         });
 };
