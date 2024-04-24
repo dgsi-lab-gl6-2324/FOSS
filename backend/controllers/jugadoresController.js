@@ -66,7 +66,7 @@ exports.new = (req, res) => {
                 debug("POST /jugadores");
             })
             .catch(err => {
-                res.status(500).json(err);
+                res.status(500).json({ message: err.message, statusCode: 500 });
                 debug("POST /jugadores ERROR");
             });
     }
@@ -105,7 +105,6 @@ exports.update = (req, res) => {
                 error.status = 404;
                 throw error;
             }
-            oldTeamId = jugador.equipo;
 
             jugador.nombre = req.body.nombre ? req.body.nombre : jugador.nombre;
             jugador.apellido1 = req.body.apellido1 ? req.body.apellido1 : jugador.apellido1;
@@ -117,10 +116,24 @@ exports.update = (req, res) => {
             jugador.ciudad = req.body.ciudad ? req.body.ciudad : jugador.ciudad;
             jugador.provincia = req.body.provincia ? req.body.provincia : jugador.provincia;
             jugador.zip = req.body.zip ? req.body.zip : jugador.zip;
-            jugador.equipo = req.body.equipo ? req.body.equipo : jugador.equipo;
             jugador.dorsal = req.body.dorsal ? req.body.dorsal : jugador.dorsal;
 
+            oldTeamId = jugador.equipo;
+            jugador.equipo = req.body.equipo ? req.body.equipo : jugador.equipo;
+
+            if (jugador.equipo) {
+                return Equipo.findById(jugador.equipo).exec()
+                    .then(equipo => {
+                        if (!equipo) {
+                            const error = new Error("Equipo no encontrado");
+                            error.status = 404;
+                            throw error;
+                        }
+                        return jugador.save();
+                    });
+            } else {
             return jugador.save();
+            }
         })
         .then(jugador => {
             let promises = [];
@@ -140,13 +153,6 @@ exports.update = (req, res) => {
                         { _id: jugador.equipo },
                         { $push: { jugadores: jugador._id } }
                     ).exec()
-                        .then(equipo => {
-                            if (!equipo) {
-                                const error = new Error("Equipo no encontrado");
-                                error.status = 404;
-                                throw error;
-                            }
-                        })
                 );
             }
       
