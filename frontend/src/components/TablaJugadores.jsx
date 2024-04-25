@@ -118,7 +118,7 @@ const TablaJugadores = () => {
           <ModalFooter>
             <Button color="primary" onClick={handleEdit}>
               Modificar
-            </Button>{" "}
+            </Button>
             <Button color="danger" onClick={handleDelete}>
               Eliminar
             </Button>

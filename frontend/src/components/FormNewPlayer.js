@@ -16,7 +16,7 @@ import { postPlayer, getTeams, putPlayer } from "../utils/apicalls";
 import { useNavigate, useLocation } from "react-router-dom";
 import Validation from "../utils/utils";
 
-const FormNewPlayer = ({ selectedPlayer }) => {
+const FormNewPlayer = () => {
   const [playerData, setPlayerData] = useState({
     nombre: "",
     apellido1: "",
@@ -59,22 +59,22 @@ const FormNewPlayer = ({ selectedPlayer }) => {
 
   const handleSave = async (event) => {
     event.preventDefault();
-    console.log(playerData);
-    
+    let alertMessage;
+  
     try {
+      let response;
+  
       if (isEditMode) {
-        const response = await putPlayer(playerData);
-        console.log(response);
-        navigate("/players", {
-          state: { alert: "¡Jugador modificado correctamente!" },
-        });
+        response = await putPlayer(playerData);
+        console.log("put")
+        alertMessage = "¡Jugador modificado correctamente!";
       } else {
-        const response = await postPlayer(playerData);
-        console.log(response);
-        navigate("/players", {
-          state: { alert: "¡Jugador registrado correctamente!" },
-        });
+        response = await postPlayer(playerData);
+        console.log("post")
+        alertMessage = "¡Jugador registrado correctamente!";
       }
+  
+      navigate('/players', { state: { alert: alertMessage } });
     } catch (error) {
       console.error(error);
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getPlayers, postTeam } from "../utils/apicalls";
+import { getPlayers, postTeam, putTeam } from "../utils/apicalls";
 import {
   Button,
   Col,
@@ -12,7 +12,7 @@ import {
   Table,
 } from "reactstrap";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { categorias } from "../utils/utils";
 
 const FormNewTeam = () => {
@@ -23,6 +23,17 @@ const FormNewTeam = () => {
   const [searchStaffType, setSearchStaffType] = useState("");
   const [players, setPlayers] = useState([]);
   const [staff, setStaff] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const player = location.state?.selectedTeam;
+    if (player) {
+      setTeamData(player);
+      setIsEditMode(true);
+    }
+  }, []);
 
   const [teamData, setTeamData] = useState({
     nombre: "",
@@ -61,9 +72,17 @@ const FormNewTeam = () => {
       staff: selectedStaff,
     };
     try {
-      const response = await postTeam(teamDataWithPlayers);
+      let response;
+      let alertMessage;
+      if (isEditMode) {
+        response = await putTeam(teamDataWithPlayers);
+        alertMessage = "¡Equipo modificado correctamente!";
+      } else {
+        response = await postTeam(teamDataWithPlayers);
+        alertMessage = "¡Equipo registrado correctamente!";
+      }
       navigate("/teams", {
-        state: { alert: "¡Equipo registrado correctamente!" },
+        state: { alert: { alertMessage } },
       });
     } catch (error) {
       console.error(error);
@@ -115,7 +134,7 @@ const FormNewTeam = () => {
                 name="categoria"
                 value={teamData.categoria}
                 onChange={handleChange}
-              > 
+              >
                 {Object.entries(categorias).map(([key, value]) => (
                   <option key={key} value={key}>
                     {value}
@@ -214,8 +233,10 @@ const FormNewTeam = () => {
               {staff
                 .filter(
                   (member) =>
-                    member.name.includes(searchStaff) &&
-                    member.type.includes(searchStaffType)
+                    (searchStaff ? member.name.includes(searchStaff) : true) &&
+                    (searchStaffType
+                      ? member.type.includes(searchStaffType)
+                      : true)
                 )
                 .map((member, index) => (
                   <tr key={index}>
