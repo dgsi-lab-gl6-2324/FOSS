@@ -32,29 +32,43 @@ exports.new = (req, res) => {
         rol: req.body.rol,
         titulo: req.body.titulo
     });
-    nuevoStaff.save()
-        .then(staff => {
-            if (staff.equipo) {
-                return Equipo.findById(staff.equipo).exec()
-                    .then(equipo => {
-                        if (!equipo) {
-                            res.status(404).json({message: "Equipo no encontrado"});
-                            debug("POST /staff ERROR");
-                        }
-                        equipo.staff.push(staff._id);
-                        return equipo.save();
-                    })
+    if (nuevoStaff.equipo) {
+        Equipo.findById(nuevoStaff.equipo).exec()
+            .then(equipo => {
+                if (!equipo) {
+                    const error = new Error("Equipo no encontrado");
+                    error.status = 404;
+                    throw error;
+                }
+                return nuevoStaff.save();
+            })
+            .then(staff => {
+                return Equipo.findByIdAndUpdate(
+                    { _id: nuevoStaff.equipo },
+                    { $push: {staff: staff._id }}
+                ).exec()
                     .then(() => {
                         res.status(201).json(staff);
-                        debug("POST /staff");
-                    });
-            } else {
+                        debug("POST /staff")
+                    })
+            })
+            .catch(err => {
+                if (err.status === 404) {
+                    res.status(err.status).json({ message: err.message, statusCode: err.status });
+                } else {
+                    res.status(500).json({ message: err.message, statusCode: 500 });
+                }
+                debug("POST /staff ERROR");
+            });
+    } else {
+        nuevoStaff.save()
+            .then(staff => {
                 res.status(201).json(staff);
                 debug("POST /staff");
-            }
-        })
-        .catch(err => {
-            res.status(500).json(err);
-            debug("POST /staff ERROR");
-        });
+            })
+            .catch(err => {
+                res.status(500).json({ message: err.message, statusCode: 500 });
+                debug("POST /staff ERROR");
+            });
+    }
 }
