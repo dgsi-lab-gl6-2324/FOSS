@@ -13,4 +13,8 @@ router.post('/', Staff.new);
 
 /* PUT actualizar staff */
 
+
+/* DELETE eliminar staff */
+post.delete('/:id', Staff.delete);
+
 module.exports = router;

@@ -72,3 +72,5 @@ exports.new = (req, res) => {
             });
     }
 }
+
+/* GET detalles staff */
