@@ -12,9 +12,11 @@ import {
   NavbarText,
 } from "reactstrap";
 
+import useUser from "../hooks/useUser";
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const isLogged = true;
+  const  {isLogged, login } = useUser();
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -66,18 +68,18 @@ function Header() {
             {isLogged ? (
               <NavLink
                 tag={Link}
-                to="/login"
+                to="/logout"
                 className="text-decoration-none text-dark"
               >
-                Login
+                Cerrar sesion
               </NavLink>
             ) : (
               <NavLink
                 tag={Link}
-                to="/logout"
+                to="/login"
                 className="text-decoration-none text-dark"
               >
-                Logout
+                Iniciar sesion
               </NavLink>
             )}
           </NavbarText>
