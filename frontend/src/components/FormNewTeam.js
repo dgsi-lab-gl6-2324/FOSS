@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getPlayers, postTeam, putTeam } from "../utils/apicalls";
+import { getPlayers, postTeam, putTeam, getStaff } from "../utils/apicalls";
 import {
   Button,
   Col,
@@ -43,6 +43,19 @@ const FormNewTeam = () => {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Realizar la llamada a la API para obtener el staff
+    getStaff()
+      .then((data) => {
+        // Actualizar el estado con los datos del staff
+        setStaff(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching staff:", error);
+      });
+  },[]);
+
 
   useEffect(() => {
     // Realizar la llamada a la API para obtener los jugadores
@@ -113,6 +126,7 @@ const FormNewTeam = () => {
   const handleSearchStaff = (event) => {
     setSearchStaff(event.target.value);
   };
+
 
   // Función para manejar la búsqueda del tipo de cuerpo técnico
   const handleSearchStaffType = (event) => {
@@ -217,7 +231,7 @@ const FormNewTeam = () => {
               placeholder="Categoria"
               type="select"
               value={searchStaff}
-              onChange={handleSearchStaff}
+              onChange={handleSearchStaffType}
             />
           </Col>
           <Table bordered className="m-3">
@@ -231,17 +245,12 @@ const FormNewTeam = () => {
             </thead>
             <tbody>
               {staff
-                .filter(
-                  (member) =>
-                    (searchStaff ? member.name.includes(searchStaff) : true) &&
-                    (searchStaffType
-                      ? member.type.includes(searchStaffType)
-                      : true)
-                )
+                .filter((staffMember) => !searchStaff || staffMember.nombre.includes(searchStaff))
                 .map((member, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
-                    <td>{member.name}</td>
+                    <td>{member.nombre}</td>
+                    <td>{member.rol}</td>
                     <td>
                       <Input
                         type="checkbox"
