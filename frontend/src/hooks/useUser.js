@@ -8,8 +8,13 @@ export default function useUser() {
     setJwt("token");
   }, [setJwt]);
 
+  const logout = useCallback(() => {
+    setJwt(null);
+  }, [setJwt]);
+
   return {
     isLogged: Boolean(jwt),
     login,
+    logout,
   };
 }

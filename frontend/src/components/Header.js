@@ -16,9 +16,13 @@ import useUser from "../hooks/useUser";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const  {isLogged, login } = useUser();
+  const  {isLogged, login, logout } = useUser();
   const toggle = () => setIsOpen(!isOpen);
-
+  
+  const handleClickLogout = e => {
+    e.preventDefault();
+    logout();
+  }
   return (
     <div>
       <Navbar expand="md">
@@ -68,7 +72,8 @@ function Header() {
             {isLogged ? (
               <NavLink
                 tag={Link}
-                to="/logout"
+                href="#"
+                onClick={handleClickLogout}
                 className="text-decoration-none text-dark"
               >
                 Cerrar sesion

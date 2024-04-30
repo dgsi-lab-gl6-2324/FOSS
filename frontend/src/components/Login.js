@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+} from "reactstrap";
+import { useNavigate, useLocation } from "react-router-dom";
+import  useUser  from "../hooks/useUser";
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const { login, isLogged } = useUser();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -15,11 +30,19 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    login(username, password);
     // Aquí puedes agregar la lógica para enviar los datos de inicio de sesión al servidor
-    console.log('Username:', username);
-    console.log('Password:', password);
+    console.log("Username:", username);
+    console.log("Password:", password);
     // También podrías hacer una solicitud HTTP para autenticar al usuario
   };
+
+  useEffect(() => {
+    
+    if (isLogged) {
+      navigate("/");
+    }
+  }, [isLogged, navigate]);
 
   return (
     <Container>
@@ -45,7 +68,9 @@ function Login() {
                 onChange={handlePasswordChange}
               />
             </FormGroup>
-            <Button color="primary" type="submit" block>Iniciar sesión</Button>
+            <Button color="primary" type="submit" block>
+              Iniciar sesión
+            </Button>
           </Form>
         </Col>
       </Row>
