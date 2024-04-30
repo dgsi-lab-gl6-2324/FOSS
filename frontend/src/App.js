@@ -8,6 +8,7 @@ import Home from "./components/Home";
 import Players from "./components/Players";
 import Teams from "./components/Teams";
 import Satff from "./components/Staff";
+import Login from "./components/Login";
 import FormNewPlayer from "./components/FormNewPlayer";
 import FormNewTeam from "./components/FormNewTeam";
 import FormNewStaff from "./components/FormNewStaff";
@@ -23,6 +24,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/logout" element={<Logout />} /> */}
           <Route path="/players" element={<Players />} />
           <Route path="/teams" element={<Teams />} />
           <Route path="/staff" element={<Satff />} />

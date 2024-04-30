@@ -14,7 +14,7 @@ import {
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const isLogged = true;
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -63,13 +63,23 @@ function Header() {
             </NavItem>
           </Nav>
           <NavbarText className="me-3">
-            <NavLink
-              tag={Link}
-              to="/teams"
-              className="text-decoration-none text-dark"
-            >
-              Login
-            </NavLink>
+            {isLogged ? (
+              <NavLink
+                tag={Link}
+                to="/login"
+                className="text-decoration-none text-dark"
+              >
+                Login
+              </NavLink>
+            ) : (
+              <NavLink
+                tag={Link}
+                to="/logout"
+                className="text-decoration-none text-dark"
+              >
+                Logout
+              </NavLink>
+            )}
           </NavbarText>
         </Collapse>
       </Navbar>
