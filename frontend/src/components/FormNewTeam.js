@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getPlayers, postTeam, putTeam, getStaff } from "../utils/apicalls";
+import { tiposStaff } from "../utils/utils";
 import {
   Button,
   Col,
@@ -54,8 +55,7 @@ const FormNewTeam = () => {
       .catch((error) => {
         console.error("Error fetching staff:", error);
       });
-  },[]);
-
+  }, []);
 
   useEffect(() => {
     // Realizar la llamada a la API para obtener los jugadores
@@ -63,7 +63,6 @@ const FormNewTeam = () => {
       .then((data) => {
         // Actualizar el estado con los datos de los jugadores
         setPlayers(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error("Error fetching players:", error);
@@ -81,7 +80,7 @@ const FormNewTeam = () => {
     event.preventDefault();
     const teamDataWithPlayers = {
       ...teamData,
-      players: selectedPlayers,
+      jugadores: selectedPlayers,
       staff: selectedStaff,
     };
     try {
@@ -100,21 +99,23 @@ const FormNewTeam = () => {
     } catch (error) {
       console.error(error);
     }
+    console.log(teamDataWithPlayers);
   };
 
   const handlePlayerSelection = (player, isSelected) => {
     if (isSelected) {
-      setSelectedPlayers((prevPlayers) => [...prevPlayers, player]);
+      setSelectedPlayers([...selectedPlayers, player]);
     } else {
-      setSelectedPlayers((prevPlayers) =>
-        prevPlayers.filter((p) => p.id !== player.id)
-      );
+      setSelectedPlayers(selectedPlayers.filter((p) => p.id !== player.id));
     }
   };
 
-  // Función para manejar la selección del cuerpo técnico
-  const handleSelectStaff = (member) => {
-    setSelectedStaff([...selectedStaff, member]);
+  const handleStaffSelection = (member, isSelected) => {
+    if (isSelected) {
+      setSelectedStaff([...selectedStaff, member]);
+    } else {
+      setSelectedStaff(selectedStaff.filter((m) => m.id !== member.id));
+    }
   };
 
   // Función para manejar la búsqueda
@@ -126,7 +127,6 @@ const FormNewTeam = () => {
   const handleSearchStaff = (event) => {
     setSearchStaff(event.target.value);
   };
-
 
   // Función para manejar la búsqueda del tipo de cuerpo técnico
   const handleSearchStaffType = (event) => {
@@ -204,7 +204,10 @@ const FormNewTeam = () => {
                       <td>
                         <Input
                           type="checkbox"
-                          onChange={handlePlayerSelection}
+                          onChange={(event) =>
+                            handlePlayerSelection(player, event.target.checked)
+                          }
+                          checked={selectedPlayers.includes(player)}
                         />
                       </td>
                     </tr>
@@ -228,11 +231,18 @@ const FormNewTeam = () => {
           <Col md={4}>
             <Input
               className="m-2"
-              placeholder="Categoria"
+              placeholder="Rol"
               type="select"
-              value={searchStaff}
+              value={searchStaffType}
               onChange={handleSearchStaffType}
-            />
+            >
+              <option value="">Ninguno</option>
+              {Object.keys(tiposStaff).map((tipo) => (
+                <option key={tipo} value={tipo}>
+                  {tiposStaff[tipo]}
+                </option>
+              ))}
+            </Input>
           </Col>
           <Table bordered className="m-3">
             <thead>
@@ -245,16 +255,25 @@ const FormNewTeam = () => {
             </thead>
             <tbody>
               {staff
-                .filter((staffMember) => !searchStaff || staffMember.nombre.includes(searchStaff))
+                .filter(
+                  (member) =>
+                    (!searchStaff || member.nombre.includes(searchStaff)) &&
+                    (!searchStaffType ||
+                      searchStaffType === "Ninguno" ||
+                      member.rol === searchStaffType)
+                )
                 .map((member, index) => (
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{member.nombre}</td>
-                    <td>{member.rol}</td>
+                    <td>{tiposStaff[member.rol]}</td>
                     <td>
                       <Input
                         type="checkbox"
-                        onChange={() => handleSelectStaff(member)}
+                        onChange={(event) =>
+                          handleStaffSelection(member, event.target.checked)
+                        }
+                        checked={selectedStaff.includes(member)}
                       />
                     </td>
                   </tr>
