@@ -15,6 +15,7 @@ import FormNewStaff from "./components/FormNewStaff";
 function App() {
 
   const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   return (
     <Router>
@@ -28,7 +29,8 @@ function App() {
           <Route path="/addplayer" element={<FormNewPlayer />} />
           <Route path="/addteam" element={<FormNewTeam />} />
           <Route path="/addstaff" element={<FormNewStaff />} />
-          <Route path="/editplayer" element={<FormNewPlayer selectedPlayer={selectedPlayer} />} />
+          <Route path="/editplayer" element={<FormNewPlayer />} />
+          <Route path="/editteam" element={<FormNewTeam />} />
           <Route
             path="*"
             element={
