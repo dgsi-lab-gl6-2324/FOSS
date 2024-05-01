@@ -67,6 +67,15 @@ function Header() {
                 Cuerpo tecnico
               </NavLink>
             </NavItem>
+            <NavItem className="me-3">
+              <NavLink
+                tag={Link}
+                to="/calendar"
+                className="text-decoration-none text-dark"
+              >
+                Calendario
+              </NavLink>
+            </NavItem>
           </Nav>
           <NavbarText className="me-3">
             {isLogged ? (

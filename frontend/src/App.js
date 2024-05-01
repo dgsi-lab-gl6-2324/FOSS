@@ -12,6 +12,7 @@ import Login from "./components/Login";
 import FormNewPlayer from "./components/FormNewPlayer";
 import FormNewTeam from "./components/FormNewTeam";
 import FormNewStaff from "./components/FormNewStaff";
+import HorarioCampos from "./components/HorarioCampos";
 import {UserContextProvider} from "./context/UserContext";
 
 function App() {
@@ -26,7 +27,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            {/* <Route path="/logout" element={<Logout />} /> */}
             <Route path="/players" element={<Players />} />
             <Route path="/teams" element={<Teams />} />
             <Route path="/staff" element={<Satff />} />
@@ -35,6 +35,7 @@ function App() {
             <Route path="/addstaff" element={<FormNewStaff />} />
             <Route path="/editplayer" element={<FormNewPlayer />} />
             <Route path="/editteam" element={<FormNewTeam />} />
+            <Route path="/calendar" element={<HorarioCampos />} />
             <Route
               path="*"
               element={
