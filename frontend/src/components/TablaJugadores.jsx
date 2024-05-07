@@ -33,13 +33,13 @@ const TablaJugadores = () => {
     const fetchTeams = async () => {
       const newTeams = {};
       for (const player of players) {
-        if (!teams[player.equipo]) {
+        if (player.equipo && !teams[player.equipo]) {
           newTeams[player.equipo] = await getSingleTeam(player.equipo);
         }
       }
       setTeams((prevTeams) => ({ ...prevTeams, ...newTeams }));
     };
-
+  
     fetchTeams();
   }, [players]);
 
@@ -66,8 +66,7 @@ const TablaJugadores = () => {
     try {
       await deletePlayer(selectedPlayer._id);
       // Actualiza la lista de jugadores después de eliminar uno
-      // Esto puede variar dependiendo de cómo estés manejando el estado de los jugadores
-      setPlayers(players.filter((player) => player.id !== selectedPlayer._id));
+      setPlayers(players.filter((player) => player._id !== selectedPlayer._id));
       // Cierra el modal y muestra un mensaje de éxito
       closeModal();
       navigate("/players", {
@@ -77,7 +76,6 @@ const TablaJugadores = () => {
       console.error(error);
     }
   };
-
   return (
     <>
       <Table hover bordered className="m-3">
@@ -85,10 +83,10 @@ const TablaJugadores = () => {
           <tr>
             <th>#</th>
             <th>Nombre</th>
-            <th>Apellido 1</th>
-            <th>Apellido 2</th>
-            <th>Age</th>
-            <th>Team</th>
+            <th>Primer apellido</th>
+            <th>Segundo apellido</th>
+            <th>Edad</th>
+            <th>Equipo</th>
           </tr>
         </thead>
         <tbody>
@@ -120,7 +118,7 @@ const TablaJugadores = () => {
           <ModalFooter>
             <Button color="primary" onClick={handleEdit}>
               Modificar
-            </Button>{" "}
+            </Button>
             <Button color="danger" onClick={handleDelete}>
               Eliminar
             </Button>

@@ -1,11 +1,12 @@
 import { Table } from "reactstrap";
 import { useState, useEffect } from "react";
 import { getStaff, getSingleTeam } from "../utils/apicalls";
+import { tiposStaff } from "../utils/utils";
 
 const TablaStaff = ({ tipoStaff }) => {
   const [staff, setStaff] = useState([]);
   const [teams, setTeams] = useState({});
-  
+
   useEffect(() => {
     // Realizar la llamada a la API para obtener los jugadores
     getStaff()
@@ -43,11 +44,20 @@ const TablaStaff = ({ tipoStaff }) => {
           <th>Apellido 2</th>
           <th>Age</th>
           <th>Team</th>
+          <th>Rol</th>
         </tr>
       </thead>
       <tbody>
         {staff
-          .filter((member) => member.rol === tipoStaff) // Filtra por tipo de staff
+          .filter((member) => {
+            if (tipoStaff === "") {
+              return (
+                member.rol !== "entrenador" && member.rol !== "entrenador2"
+              );
+            } else {
+              return member.rol === tipoStaff;
+            }
+          }) // Filtra por tipo de staff
           .map((member) => (
             <tr key={member.id}>
               <th scope="row">{member.id}</th>
@@ -56,6 +66,7 @@ const TablaStaff = ({ tipoStaff }) => {
               <td>{member.apellido2}</td>
               <td>{member.edad}</td>
               <td>{teams[member.equipo]?.nombre}</td>
+              <td>{tiposStaff[member.rol]}</td>
             </tr>
           ))}
       </tbody>
