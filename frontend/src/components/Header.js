@@ -12,11 +12,17 @@ import {
   NavbarText,
 } from "reactstrap";
 
+import useUser from "../hooks/useUser";
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const  {isLogged, login, logout } = useUser();
   const toggle = () => setIsOpen(!isOpen);
-
+  
+  const handleClickLogout = e => {
+    e.preventDefault();
+    logout();
+  }
   return (
     <div>
       <Navbar expand="md">
@@ -58,18 +64,38 @@ function Header() {
                 to="/staff"
                 className="text-decoration-none text-dark"
               >
-                Cuerpo técino
+                Cuerpo tecnico
+              </NavLink>
+            </NavItem>
+            <NavItem className="me-3">
+              <NavLink
+                tag={Link}
+                to="/calendar"
+                className="text-decoration-none text-dark"
+              >
+                Calendario
               </NavLink>
             </NavItem>
           </Nav>
           <NavbarText className="me-3">
-            <NavLink
-              tag={Link}
-              to="/teams"
-              className="text-decoration-none text-dark"
-            >
-              Login
-            </NavLink>
+            {isLogged ? (
+              <NavLink
+                tag={Link}
+                href="#"
+                onClick={handleClickLogout}
+                className="text-decoration-none text-dark"
+              >
+                Cerrar sesion
+              </NavLink>
+            ) : (
+              <NavLink
+                tag={Link}
+                to="/login"
+                className="text-decoration-none text-dark"
+              >
+                Iniciar sesion
+              </NavLink>
+            )}
           </NavbarText>
         </Collapse>
       </Navbar>

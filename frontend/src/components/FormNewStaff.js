@@ -28,7 +28,7 @@ const FormNewStaff = () => {
     ciudad: "",
     provincia: "",
     zip: "",
-    equipo: [],
+    equipo: null,
     rol: "",
     titulo: "",
   });
@@ -54,6 +54,7 @@ const FormNewStaff = () => {
 
   const handleSave = async (event) => {
     event.preventDefault();
+    console.log(staffData)
     try {
       const response = await postStaff(staffData);
       navigate("/staff", {
