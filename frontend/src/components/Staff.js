@@ -17,6 +17,11 @@ const Staff = () => {
         <TablaStaff tipoStaff="entrenador2" />
       </Row>
       <Row>
+        <h3>Otros</h3>
+        <hr />
+        <TablaStaff tipoStaff="" />
+      </Row>
+      <Row>
         <Link to="/addstaff" className="text-decoration-none">
           <Button color="primary">
             Agregar nuevo miembro del cuerpo técnico
